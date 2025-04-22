@@ -1,0 +1,60 @@
+{
+  "name": "my-electron-react-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev:react": "vite",
+    "build:react": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "dev": "concurrently \"npm run dev:react\" \"wait-on http://localhost:5173 && electron .\"",
+    "build": "npm run build:react && electron-builder",
+    "postinstall": "electron-builder install-app-deps" 
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react-swc": "^3.8.0",
+    "concurrently": "^8.2.2", 
+    "electron": "^31.1.0", 
+    "electron-builder": "^24.13.3", 
+    "wait-on": "^7.2.0",
+    "eslint": "^9.22.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^16.0.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.26.1",
+    "vite": "^6.3.1"
+  },
+  "build": {
+    "appId": "com.example.myelectronreactapp", 
+    "productName": "MyElectronReactApp", 
+    "files": [
+      "dist/**/*", 
+      "electron/**/*" 
+    ],
+    "directories": {
+      "buildResources": "assets", 
+      "output": "release" 
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico" 
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon.icns" 
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icon.png" 
+    }
+  }
+}
