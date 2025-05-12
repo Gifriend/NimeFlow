@@ -1,17 +1,17 @@
-import { useState, FormEvent } from 'react';
-import { Link, } from 'react-router-dom';
-import api from '../../services/axios';
+import { useState, FormEvent } from "react";
+import { Link } from "react-router-dom";
+import api from "../../services/axios";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const validateForm = () => {
     if (!email || !password) {
-      setError('Email dan password harus diisi');
+      setError("Email dan password harus diisi");
       return false;
     }
     return true;
@@ -24,34 +24,33 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const response = await api.post('/auth/login', {
+      const response = await api.post("/auth/login", {
         email,
         password,
       });
 
       const payload = response.data;
-      console.log('Payload:', payload);
+      console.log("Payload:", payload);
       if (payload.result && payload.result.access_token) {
         document.cookie = `access_token=${payload.result.access_token}; path=/`;
         document.cookie = `refresh_token=${payload.result.refresh_token}; path=/`;
 
-        window.location.href="/home"
-        
+        window.location.href = "/home";
       } else {
         alert(
           payload.message ||
-            'Login gagal. Periksa kembali email dan password Anda.'
+            "Login gagal. Periksa kembali email dan password Anda."
         );
       }
     } catch (err: any) {
       const isNetworkError =
         !err.response ||
-        err.code === 'ECONNABORTED' ||
-        err.message === 'Network Error';
+        err.code === "ECONNABORTED" ||
+        err.message === "Network Error";
       alert(
         isNetworkError
-          ? 'Gagal terhubung ke server.'
-          : 'Email atau password salah'
+          ? "Gagal terhubung ke server."
+          : "Email atau password salah"
       );
     } finally {
       setIsLoading(false);
@@ -75,7 +74,8 @@ export default function Login() {
           {error && (
             <div
               className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-              role="alert">
+              role="alert"
+            >
               <span className="block sm:inline">{error}</span>
             </div>
           )}
@@ -84,7 +84,8 @@ export default function Login() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700">
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email
               </label>
               <div className="mt-1">
@@ -104,14 +105,15 @@ export default function Login() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700">
+                className="block text-sm font-medium text-gray-700"
+              >
                 Password
               </label>
               <div className="mt-1 relative">
                 <input
                   id="password"
                   name="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -121,13 +123,15 @@ export default function Login() {
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
-                  onClick={togglePasswordVisibility}>
+                  onClick={togglePasswordVisibility}
+                >
                   {showPassword ? (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5 text-gray-500"
                       viewBox="0 0 20 20"
-                      fill="currentColor">
+                      fill="currentColor"
+                    >
                       <path
                         fillRule="evenodd"
                         d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z"
@@ -140,7 +144,8 @@ export default function Login() {
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5 text-gray-500"
                       viewBox="0 0 20 20"
-                      fill="currentColor">
+                      fill="currentColor"
+                    >
                       <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
                       <path
                         fillRule="evenodd"
@@ -154,12 +159,14 @@ export default function Login() {
             </div>
 
             <div>
-              <Link to="/home">
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-                {isLoading ? 'Sedang masuk' : 'Masuk'}
-              </button></Link>
+              <Link to="/schedule">
+                <button
+                  type="submit"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                >
+                  {isLoading ? "Sedang masuk" : "Masuk"}
+                </button>
+              </Link>
             </div>
           </form>
 
@@ -175,10 +182,11 @@ export default function Login() {
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                Belum punya akun?{' '}
+                Belum punya akun?{" "}
                 <Link
                   to="/register"
-                  className="font-medium text-blue-600 hover:text-blue-500">
+                  className="font-medium text-blue-600 hover:text-blue-500"
+                >
                   Daftar sekarang
                 </Link>
               </p>
