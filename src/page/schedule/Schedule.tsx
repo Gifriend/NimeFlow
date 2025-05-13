@@ -125,88 +125,11 @@ export default function DesktopAnimeScheduleApp() {
     ],
   });
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeSection, setActiveSection] = useState("jadwal");
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery((e as React.ChangeEvent<HTMLInputElement>).target.value);
-  };
-
-  // Navbar items
-  const navItems = [
-    { id: "home", label: "Home", icon: "🏠" },
-    { id: "anime-list", label: "Anime List", icon: "📋" },
-    { id: "jadwal", label: "Jadwal Rilis", icon: "📅" },
-    { id: "ongoing", label: "On-Going", icon: "🎬" },
-    { id: "genre", label: "Genre", icon: "🏷️" },
-    { id: "favorites", label: "Favorites", icon: "⭐" },
-  ];
 
   return (
-    <div className="flex flex-col h-screen bg-gray-900 text-white overflow-hidden">
-      {/* Top Navigation Bar */}
-      <header className="bg-gray-800 border-b border-gray-700">
-        <div className="flex items-center h-16 px-6">
-          {/* App Logo */}
-          <div className="flex items-center mr-8">
-            <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-              NimeFlow
-            </h1>
-          </div>
-
-          {/* Navigation Links */}
-          <nav className="flex-1">
-            <ul className="flex space-x-1">
-              {navItems.map((item) => (
-                <li key={item.id}>
-                  <button
-                    onClick={() => setActiveSection(item.id)}
-                    className={`flex items-center px-4 py-2 rounded-md transition-colors ${
-                      activeSection === item.id
-                        ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
-                        : "hover:bg-gray-700 text-gray-300"
-                    }`}
-                  >
-                    <span className="mr-2">{item.icon}</span>
-                    <span>{item.label}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          {/* Right Side Tools */}
-          <div className="flex items-center space-x-4">
-            {/* Search */}
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search Anime..."
-                className="pl-9 pr-4 py-2 bg-gray-700/70 text-gray-100 rounded-lg border border-gray-600 focus:outline-none focus:border-blue-500 transition-all w-64"
-                value={searchQuery}
-                onChange={handleSearch}
-              />
-              <span className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                🔍
-              </span>
-            </div>
-
-            {/* Notifications */}
-            <button className="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors relative">
-              <span>🔔</span>
-              <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-
-            {/* Settings */}
-            <button className="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors">
-              <span>⚙️</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
+    <div className="flex flex-col min-h-screen bg-gray-900 text-white">
       {/* Main Content Area */}
-      <main className="flex-1 overflow-auto p-6">
+      <main className="flex-1 p-6">
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-2">Jadwal</h2>
           <p className="text-gray-400">Weekly anime release schedule</p>
