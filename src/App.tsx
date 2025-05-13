@@ -20,6 +20,7 @@ function AppWrapper() {
         <Route path="/schedule" element={<DesktopAnimeScheduleApp />} />
         <Route path="/ongoing" element={<Ongoing />} />
         <Route path="/completed" element={<Completed />} />
+        <Route path="/history"/>
       </Routes>
     </>
   );

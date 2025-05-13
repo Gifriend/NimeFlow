@@ -25,7 +25,7 @@ function createWindow() {
   if (isDev) {
     // Development: Muat dari server Vite dev
     // Pastikan port ini (5173) cocok dengan yang digunakan Vite DAN yang ada di perintah wait-on di package.json
-    mainWindow.loadURL('http://localhost:5173');
+    mainWindow.loadURL('http://localhost:4321');
     mainWindow.webContents.openDevTools(); // Buka DevTools otomatis
   } else {
     // Production: Muat build statis dari Vite

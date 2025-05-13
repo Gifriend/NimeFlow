@@ -9,7 +9,7 @@
     "build:react": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "dev": "concurrently \"npm run dev:react\" \"wait-on http://localhost:5173 && electron .\"",
+    "dev": "concurrently \"npm run dev:react\" \"wait-on http://localhost:4321 && electron .\"",
     "build": "npm run build:react && electron-builder",
     "postinstall": "electron-builder install-app-deps"
   },
