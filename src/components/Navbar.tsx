@@ -1,6 +1,6 @@
 // components/Navbar.tsx
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   FaHome,
   FaList,
@@ -15,6 +15,7 @@ import {
 
 const Navbar: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -43,8 +44,11 @@ const Navbar: React.FC = () => {
     { id: 'genre', label: 'Genre', icon: <FaTags />, path: '/genre' },
   ];
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+    }
   };
 
   useEffect(() => {
@@ -106,16 +110,35 @@ const Navbar: React.FC = () => {
                   placeholder="Search Anime..."
                   className="pl-9 pr-4 py-2 bg-gray-700/70 text-gray-100 rounded-lg border border-gray-600 focus:outline-none focus:border-blue-500 transition-all w-64"
                   value={searchQuery}
-                  onChange={handleSearch}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && searchQuery.trim()) {
+                      navigate(
+                        `/search?q=${encodeURIComponent(searchQuery.trim())}`
+                      );
+                      setSearchQuery('');
+                    }
+                  }}
                 />
-                <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               </div>
+              <button
+                onClick={() => {
+                  if (searchQuery.trim()) {
+                    navigate(
+                      `/search?q=${encodeURIComponent(searchQuery.trim())}`
+                    );
+                    setSearchQuery('');
+                  }
+                }}
+                className="absolute right-20 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white hover:cursor-pointer">
+                <FaSearch />
+              </button>
 
-              {/* Notifications */}
+              {/* Notifications
               <button className="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors relative">
                 <FaBell />
                 <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full" />
-              </button>
+              </button> */}
 
               {/* Settings */}
               <button
