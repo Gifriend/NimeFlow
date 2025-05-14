@@ -5,6 +5,8 @@ import DesktopAnimeScheduleApp from "./page/schedule/Schedule";
 import Navbar from "./components/Navbar";
 import Ongoing from "./page/ongoing/ongoing";
 import Completed from "./page/completed/completed";
+import HistoryScreen from "./page/history/History";
+import SearchResult from "./page/search/SearchResult";
 
 function AppWrapper() {
   const location = useLocation();
@@ -20,7 +22,8 @@ function AppWrapper() {
         <Route path="/schedule" element={<DesktopAnimeScheduleApp />} />
         <Route path="/ongoing" element={<Ongoing />} />
         <Route path="/completed" element={<Completed />} />
-        <Route path="/history"/>
+        <Route path="/history" element={<HistoryScreen/>}/>
+        <Route path="/search" element={<SearchResult />} />
       </Routes>
     </>
   );
