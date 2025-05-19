@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Sidebar from "../../components/Sidebar";
+import { Link } from "react-router-dom";
 
 type AnimeItem = {
   title: string;
@@ -89,15 +90,12 @@ const AnimeList = () => {
               <h2 className="text-xl md:text-2xl font-semibold mb-3">{group.startWith}</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2">
                 {group.animeList.map((anime) => (
-                  <a
+                  <Link
                     key={anime.animeId}
-                    href={anime.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1 rounded transition block text-sm md:text-base text-white hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-600"
-                  >
+                    to={`/anime/${anime.animeId}`}
+                    className="p-1 rounded transition block text-sm md:text-base text-white hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-400 hover:to-purple-600">
                     {anime.title}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </section>

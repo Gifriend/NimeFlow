@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function Completed() {
   const [completedAnimeData, setCompletedAnimeData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1); // Menyimpan halaman saat ini
-  const [totalPages, setTotalPages] = useState(1); // Menyimpan total halaman
-  const [pageNumbers, setPageNumbers] = useState<number[]>([]); // Menyimpan halaman yang ditampilkan
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [pageNumbers, setPageNumbers] = useState<number[]>([]); 
 
   useEffect(() => {
     const fetchCompletedAnime = async () => {
@@ -17,7 +18,7 @@ export default function Completed() {
           `${import.meta.env.VITE_API_BASE_URL}/samehadaku/completed`,
           {
             params: {
-              page: currentPage, // Mengirimkan halaman saat ini
+              page: currentPage,
             },
           }
         );
@@ -25,7 +26,7 @@ export default function Completed() {
         console.log("Response API:", res.data);
 
         setCompletedAnimeData(res.data.data.animeList);
-        setTotalPages(res.data.pagination.totalPages); // Mengambil total halaman dari API
+        setTotalPages(res.data.pagination.totalPages); 
       } catch (error) {
         console.error("Error fetching completed anime:", error);
       } finally {
@@ -34,11 +35,10 @@ export default function Completed() {
     };
 
     fetchCompletedAnime();
-  }, [currentPage]); // Mengupdate fetch data saat halaman berubah
+  }, [currentPage]);
 
   useEffect(() => {
-    // Menampilkan nomor halaman yang bisa dipilih berdasarkan halaman aktif
-    const pageLimit = 5; // Menampilkan 5 halaman terdekat
+    const pageLimit = 5; 
     const startPage = Math.max(currentPage - Math.floor(pageLimit / 2), 1);
     const endPage = Math.min(startPage + pageLimit - 1, totalPages);
     const newPageNumbers = Array.from(
@@ -46,12 +46,12 @@ export default function Completed() {
       (_, index) => startPage + index
     );
     setPageNumbers(newPageNumbers);
-  }, [currentPage, totalPages]); // Mengupdate nomor halaman saat currentPage atau totalPages berubah
+  }, [currentPage, totalPages]);
 
   // Fungsi untuk berpindah halaman
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage); // Update halaman yang dipilih
+      setCurrentPage(newPage);
     }
   };
 
@@ -71,15 +71,15 @@ export default function Completed() {
           <div>
             <div className="grid grid-cols-5 gap-4">
               {completedAnimeData.map((anime, index) => (
+                <Link to={`/anime/${anime.animeId}`} key={index} className="block" >
                 <div
-                  key={index}
-                  className="bg-gray-800 w-56 rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all"
+                  className="bg-gray-800 w-56 h-full rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all"
                 >
                   <div className="relative">
                     <img
                       src={anime.poster}
                       alt={anime.title}
-                      className="w-full h-56 object-cover"
+                      className="w-full h-78 object-cover"
                       onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null;
@@ -87,7 +87,7 @@ export default function Completed() {
                       }}
                     />
                     <div className="absolute top-2 left-2 bg-gradient-to-r from-blue-600 to-purple-500 text-xs px-2 py-0.5 rounded">
-                      Completed
+                      {anime.type}
                     </div>
                     <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold px-2 py-0.5 rounded flex items-center">
                       <FaStar className="text-black mr-1" /> {anime.score || "N/A"}
@@ -96,11 +96,12 @@ export default function Completed() {
 
                   <div className="p-3">
                     <p className="text-xs bg-gray-700 px-2 py-0.5 rounded mb-2 inline-block">
-                      Completed
+                      {anime.status}
                     </p>
                     <h3 className="font-medium text-sm leading-tight">{anime.title}</h3>
                   </div>
                 </div>
+                </Link>
               ))}
             </div>
 
