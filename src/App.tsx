@@ -8,6 +8,8 @@ import Completed from "./page/completed/completed";
 import HistoryScreen from "./page/history/History";
 import SearchResult from "./page/search/SearchResult";
 import AnimeList from "./page/animelist/animelist";
+import GenrePage from "./page/genre/genre";
+import GenreDetailPage from "./page/genre/[genreId]/genreId";
 
 function AppWrapper() {
   const location = useLocation();
@@ -26,6 +28,8 @@ function AppWrapper() {
         <Route path="/history" element={<HistoryScreen/>}/>
         <Route path="/search" element={<SearchResult />} />
         <Route path="/animelist" element={<AnimeList />} />
+        <Route path="/genre" element={<GenrePage />} />
+        <Route path="/genre/:genreId" element={<GenreDetailPage />} />
       </Routes>
     </>
   );
