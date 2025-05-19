@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 const dayMap: Record<string, string> = {
   Monday: "Senin",
@@ -15,6 +16,7 @@ export default function DesktopAnimeScheduleApp() {
   const [scheduleData, setScheduleData] = useState<Record<string, any[]>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSchedule = async () => {
@@ -29,15 +31,16 @@ export default function DesktopAnimeScheduleApp() {
         fetchedData.forEach((dayEntry: any) => {
           const dayName = dayMap[dayEntry.day] || dayEntry.day;
           transformedData[dayName] = dayEntry.animeList.map((anime: any) => ({
+            id: anime.animeId, 
             title: anime.title,
             rating: parseFloat(anime.score),
             time: anime.estimation,
             image: anime.poster,
-            episode: null, 
           }));
         });
 
         setScheduleData(transformedData);
+        console.log(transformedData)
       } catch (err) {
         console.error(err);
         setError("Failed to fetch schedule data.");
@@ -80,6 +83,7 @@ export default function DesktopAnimeScheduleApp() {
                       {animes.map((anime, index) => (
                         <li
                           key={index}
+                          onClick={() => navigate(`/anime/${anime.id}`)}
                           className="flex gap-3 hover:bg-gray-700/50 p-2 rounded-lg transition-colors"
                         >
                           <img
