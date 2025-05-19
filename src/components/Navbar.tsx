@@ -36,10 +36,10 @@ const Navbar: React.FC = () => {
       path: '/schedule',
     },
     {
-      id: 'anime-list',
+      id: 'animelist',
       label: 'Anime List',
       icon: <FaList />,
-      path: '/anime-list',
+      path: '/animelist',
     },
     { id: 'genre', label: 'Genre', icon: <FaTags />, path: '/genre' },
   ];
