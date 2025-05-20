@@ -71,7 +71,7 @@ export default function Completed() {
           <div>
             <div className="grid grid-cols-5 gap-4">
               {completedAnimeData.map((anime, index) => (
-                <Link to={`/anime/${anime.animeId}`} key={index} className="block" >
+                 <Link to={`/anime/${anime.animeId}`} key={index} className="block" >
                 <div
                   className="bg-gray-800 w-56 h-full rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all"
                 >
@@ -79,7 +79,7 @@ export default function Completed() {
                     <img
                       src={anime.poster}
                       alt={anime.title}
-                      className="w-full h-78 object-cover"
+                      className="w-full h-74 object-cover"
                       onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null;
@@ -92,12 +92,11 @@ export default function Completed() {
                     <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold px-2 py-0.5 rounded flex items-center">
                       <FaStar className="text-black mr-1" /> {anime.score || "N/A"}
                     </div>
+                    <div className="absolute bottom-2 left-2 bg-gray-800/80 text-white text-[10px] px-2 py-0.5 rounded">
+                    {anime.status}
                   </div>
-
+                  </div>
                   <div className="p-3">
-                    <p className="text-xs bg-gray-700 px-2 py-0.5 rounded mb-2 inline-block">
-                      {anime.status}
-                    </p>
                     <h3 className="font-medium text-sm leading-tight">{anime.title}</h3>
                   </div>
                 </div>
