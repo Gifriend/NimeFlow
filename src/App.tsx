@@ -17,6 +17,7 @@ import GenrePage from './page/genre/genre';
 import GenreDetailPage from './page/genre/[genreId]/genreId';
 import EpisodeStreamingPage from './page/streaming/EpisodeStreamingPage';
 import AnimeDetail from './page/animedetail/AnimeDetailPage';
+import HomePage from './page/home/home';
 
 function AppWrapper() {
   const location = useLocation();
@@ -40,6 +41,7 @@ function AppWrapper() {
         <Route path="/genre/:genreId" element={<GenreDetailPage />} />
        <Route path="/anime/:animeId" element={<AnimeDetail />} />
         <Route path="/episode/:episodeId" element={<EpisodeStreamingPage />} />
+        <Route path="/home" element={<HomePage />} />
       </Routes>
     </>
   );
