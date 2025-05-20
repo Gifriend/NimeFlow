@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function Ongoing() {
   const [ongoingAnimeData, setOngoingAnimeData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1); // Menyimpan halaman saat ini
-  const [totalPages, setTotalPages] = useState(1); // Menyimpan total halaman
-  const [pageNumbers, setPageNumbers] = useState<number[]>([]); // Menyimpan halaman yang ditampilkan
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [pageNumbers, setPageNumbers] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchOngoingAnime = async () => {
@@ -17,7 +18,7 @@ export default function Ongoing() {
           `${import.meta.env.VITE_API_BASE_URL}/samehadaku/ongoing`,
           {
             params: {
-              page: currentPage, // Mengirimkan halaman saat ini
+              page: currentPage,
               order: "latest",
             },
           }
@@ -26,7 +27,7 @@ export default function Ongoing() {
         console.log("Response API:", res.data);
 
         setOngoingAnimeData(res.data.data.animeList);
-        setTotalPages(res.data.pagination.totalPages); // Mengambil total halaman dari API
+        setTotalPages(res.data.pagination.totalPages);
       } catch (error) {
         console.error("Error fetching ongoing anime:", error);
       } finally {
@@ -35,11 +36,9 @@ export default function Ongoing() {
     };
 
     fetchOngoingAnime();
-  }, [currentPage]); // Mengupdate fetch data saat halaman berubah
-
+  }, [currentPage]);
   useEffect(() => {
-    // Menampilkan nomor halaman yang bisa dipilih berdasarkan halaman aktif
-    const pageLimit = 5; // Menampilkan 5 halaman terdekat
+    const pageLimit = 5;
     const startPage = Math.max(currentPage - Math.floor(pageLimit / 2), 1);
     const endPage = Math.min(startPage + pageLimit - 1, totalPages);
     const newPageNumbers = Array.from(
@@ -47,12 +46,11 @@ export default function Ongoing() {
       (_, index) => startPage + index
     );
     setPageNumbers(newPageNumbers);
-  }, [currentPage, totalPages]); // Mengupdate nomor halaman saat currentPage atau totalPages berubah
+  }, [currentPage, totalPages]);
 
-  // Fungsi untuk berpindah halaman
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage); // Update halaman yang dipilih
+      setCurrentPage(newPage);
     }
   };
 
@@ -72,15 +70,15 @@ export default function Ongoing() {
           <div>
             <div className="grid grid-cols-5 gap-4">
               {ongoingAnimeData.map((anime, index) => (
+                 <Link to={`/anime/${anime.animeId}`} key={index} className="block" >
                 <div
-                  key={index}
-                  className="bg-gray-800 w-56 rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all"
+                  className="bg-gray-800 w-56 h-full rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all"
                 >
                   <div className="relative">
                     <img
                       src={anime.poster}
                       alt={anime.title}
-                      className="w-full h-56 object-cover"
+                      className="w-full h-78 object-cover"
                       onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null;
@@ -102,6 +100,7 @@ export default function Ongoing() {
                     <h3 className="font-medium text-sm leading-tight">{anime.title}</h3>
                   </div>
                 </div>
+                </Link>
               ))}
             </div>
 
