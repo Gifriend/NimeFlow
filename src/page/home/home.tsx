@@ -14,8 +14,8 @@ interface AnimeItem {
   type?: string;
   status?: string;
   score?: string;
-    releaseDate: string; // ini wajib karena di response ada
-  genreList: { title: string }[]; // array genre
+  releaseDate: string;
+  genreList: { title: string }[];
   samehadakuUrl?: string;
 }
 
@@ -125,30 +125,29 @@ useEffect(() => {
               <button className="text-sm text-purple-400 hover:underline">More</button>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-  {animeList.length > 0 ? (
-    animeList.map((anime, index) => (
-      <Link
-        to={`/anime/${anime.animeId}`}
-        key={index}
-        className="block rounded-lg overflow-hidden shadow-lg hover:shadow-purple-400/50 transition"
-      >
-        <img
-          src={anime.poster}
-          alt={anime.title}
-          className="w-full h-48 object-cover"
-        />
-        <div className="p-2">
-          <h3 className="text-sm font-semibold truncate">{anime.title}</h3>
-          <p className="text-xs text-gray-500">{anime.releasedOn}</p>
+          {animeList.length > 0 ? (
+            animeList.map((anime, index) => (
+              <Link
+                to={`/anime/${anime.animeId}`}
+                key={index}
+                className="block rounded-lg overflow-hidden shadow-lg hover:shadow-purple-400/50 transition"
+              >
+                <img
+                  src={anime.poster}
+                  alt={anime.title}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-2">
+                  <h3 className="text-sm font-semibold truncate">{anime.title}</h3>
+                  <p className="text-xs text-gray-500">{anime.releasedOn}</p>
+                </div>
+              </Link>
+            ))
+          ) : (
+            <p className="text-sm text-gray-400">Tidak ada episode terbaru.</p>
+          )}
         </div>
-      </Link>
-    ))
-  ) : (
-    <p className="text-sm text-gray-400">Tidak ada episode terbaru.</p>
-  )}
-</div>
           </section>
-
           {/* Batch Download */}
           <section>
             <div className="flex justify-between items-center mb-4">
@@ -164,42 +163,42 @@ useEffect(() => {
         </div>
 
         {/* Anime Movie Sidebar */}
-<aside className="space-y-4">
-  <h3 className="text-xl font-semibold mb-4">Anime Movie</h3>
-  {movieList.map((anime) => (
-    <div
-      key={anime.animeId}
-      className="flex bg-gray-800 rounded-lg overflow-hidden shadow-md"
-    >
-      {/* Poster kiri dengan link */}
-      <Link to={`/anime/${anime.animeId}`} className="flex-shrink-0">
-        <img
-          src={anime.poster}
-          alt={anime.title}
-          className="w-24 h-32 object-cover"
-        />
-      </Link>
-      
-      {/* Detail kanan */}
-      <div className="p-3 flex flex-col justify-between flex-1">
-        <Link to={`/anime/${anime.animeId}`} className="hover:underline">
-          <h4 className="text-sm font-semibold line-clamp-2 cursor-pointer">{anime.title}</h4>
-        </Link>
-        <p className="text-xs text-gray-400">Release: {anime.releaseDate}</p>
-        <div className="mt-1 flex flex-wrap gap-1">
-          {anime.genreList?.map((genre: { title: string }, i: number) => (
-            <span
-              key={i}
-              className="bg-blue-600 text-xs px-2 py-0.5 rounded-full"
+        <aside className="space-y-4">
+          <h3 className="text-xl font-semibold mb-4">Anime Movie</h3>
+          {movieList.map((anime) => (
+            <div
+              key={anime.animeId}
+              className="flex bg-gray-800 rounded-lg overflow-hidden shadow-md"
             >
-              {genre.title}
-            </span>
+              {/* Poster kiri dengan link */}
+              <Link to={`/anime/${anime.animeId}`} className="flex-shrink-0">
+                <img
+                  src={anime.poster}
+                  alt={anime.title}
+                  className="w-24 h-32 object-cover"
+                />
+              </Link>
+              
+              {/* Detail kanan */}
+              <div className="p-3 flex flex-col justify-between flex-1">
+                <Link to={`/anime/${anime.animeId}`} className="hover:underline">
+                  <h4 className="text-sm font-semibold line-clamp-2 cursor-pointer">{anime.title}</h4>
+                </Link>
+                <p className="text-xs text-gray-400">Release: {anime.releaseDate}</p>
+                <div className="mt-1 flex flex-wrap gap-1">
+                  {anime.genreList?.map((genre: { title: string }, i: number) => (
+                    <span
+                      key={i}
+                      className="bg-blue-600 text-xs px-2 py-0.5 rounded-full"
+                    >
+                      {genre.title}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
           ))}
-        </div>
-      </div>
-    </div>
-  ))}
-</aside>
+        </aside>
       </div>
     </div>
   );
