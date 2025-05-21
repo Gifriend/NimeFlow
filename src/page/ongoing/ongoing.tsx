@@ -58,7 +58,7 @@ export default function Ongoing() {
     <div className="bg-gray-900 text-white min-h-screen">
       <Sidebar />
 
-      <main className="mr-64 mt-16 p-6">
+      <main className="mr-80 mt-16 p-6">
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-2">Anime Sedang Tayang</h2>
           <p className="text-gray-400">Daftar anime yang sedang tayang minggu ini</p>
@@ -72,7 +72,7 @@ export default function Ongoing() {
               {ongoingAnimeData.map((anime, index) => (
                  <Link to={`/anime/${anime.animeId}`} key={index} className="block" >
                 <div
-                  className="bg-gray-800 w-56 h-full rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all"
+                  className="bg-gray-800 w-54 h-full rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all"
                 >
                   <div className="relative">
                     <img

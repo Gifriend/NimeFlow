@@ -30,7 +30,7 @@ export default function GenreDetailPage() {
   return (
     <div className="bg-gray-900 text-white min-h-screen">
       <Sidebar />
-      <main className="mr-64 mt-15 p-6">
+      <main className="mr-80 mt-15 p-6">
         {/* Tombol Back ke Genre List */}
         <button
         onClick={() => navigate("/genre")}
@@ -53,7 +53,7 @@ export default function GenreDetailPage() {
             {animeList.map((anime, index) => (
               <div
                 key={index}
-                className="bg-gray-800 w-56 rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all"
+                className="bg-gray-800 w-54 rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all"
               >
                 <div className="relative">
                   <img

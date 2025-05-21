@@ -8,7 +8,6 @@ import {
   FaFilm,
   FaTags,
   FaStar,
-  FaBell,
   FaCog,
   FaSearch,
 } from 'react-icons/fa';
@@ -21,7 +20,7 @@ const Navbar: React.FC = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const navItems = [
-    { id: 'home', label: 'Home', icon: <FaHome />, path: '/Home' },
+    { id: 'home', label: 'Home', icon: <FaHome />, path: '/home' },
     {
       id: 'completed',
       label: 'Completed',
@@ -43,13 +42,6 @@ const Navbar: React.FC = () => {
     },
     { id: 'genre', label: 'Genre', icon: <FaTags />, path: '/genre' },
   ];
-
-  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery('');
-    }
-  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
