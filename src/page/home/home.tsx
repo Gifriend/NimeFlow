@@ -3,6 +3,7 @@ import axios from "axios";
 import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
 import { FaPlay, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Footer from "../../components/footer";
 
 interface AnimeItem {
   title: string;
@@ -32,7 +33,8 @@ useEffect(() => {
       const res = await axios.get(`${apiUrl}/samehadaku/home`);
       const data = res.data?.data;
 
-      console.log("API Response:", data);
+      console.log("API URL:", import.meta.env.VITE_API_BASE_URL);
+      console.log("API Response Test:", data);
 
       setAnimeList(data?.recent?.animeList || []);
       setBatchList(data?.batch?.batchList || []);
@@ -200,6 +202,7 @@ useEffect(() => {
           ))}
         </aside>
       </div>
+      <Footer/>
     </div>
   );
 }
