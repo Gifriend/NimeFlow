@@ -3,6 +3,7 @@ import Sidebar from "../../components/Sidebar";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Footer from "../../components/footer";
 
 export default function Ongoing() {
   const [ongoingAnimeData, setOngoingAnimeData] = useState<any[]>([]);
@@ -135,6 +136,7 @@ export default function Ongoing() {
           </div>
         )}
       </main>
+      <Footer/>
     </div>
   );
 }
