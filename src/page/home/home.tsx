@@ -3,7 +3,6 @@ import axios from "axios";
 import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
 import { FaPlay, FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Footer from "../../components/footer";
 
 interface AnimeItem {
   title: string;
@@ -202,7 +201,6 @@ useEffect(() => {
           ))}
         </aside>
       </div>
-      <Footer/>
     </div>
   );
 }

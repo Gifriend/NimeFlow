@@ -8,6 +8,7 @@ import Login from './page/login/Login';
 import RegisterForm from './page/register/Register';
 import DesktopAnimeScheduleApp from './page/schedule/Schedule';
 import Navbar from './components/Navbar';
+import Footer from './components/footer';
 import Ongoing from './page/ongoing/ongoing';
 import Completed from './page/completed/completed';
 import HistoryScreen from './page/history/History';
@@ -18,16 +19,18 @@ import GenreDetailPage from './page/genre/[genreId]/genreId';
 import EpisodeStreamingPage from './page/streaming/EpisodeStreamingPage';
 import AnimeDetail from './page/animedetail/AnimeDetailPage';
 import HomePage from './page/home/home';
+import Recent from './page/recent/recent';
 
 function AppWrapper() {
   const location = useLocation();
 
-  const hideNavbar =
+  const hideLayout =
     location.pathname === '/' || location.pathname === '/register';
 
   return (
     <>
-      {!hideNavbar && <Navbar />}
+      {!hideLayout && <Navbar />}
+      
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<RegisterForm />} />
@@ -39,10 +42,13 @@ function AppWrapper() {
         <Route path="/animelist" element={<AnimeList />} />
         <Route path="/genre" element={<GenrePage />} />
         <Route path="/genre/:genreId" element={<GenreDetailPage />} />
-       <Route path="/anime/:animeId" element={<AnimeDetail />} />
+        <Route path="/anime/:animeId" element={<AnimeDetail />} />
         <Route path="/episode/:episodeId" element={<EpisodeStreamingPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/recent" element={<Recent />} />
       </Routes>
+
+      {!hideLayout && <Footer />} {/* ✅ Tambahkan Footer di sini */}
     </>
   );
 }

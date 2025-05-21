@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Sidebar from "../../components/Sidebar";
 import { Link } from "react-router-dom";
-import Footer from "../../components/footer";
 
 type AnimeItem = {
   title: string;
@@ -106,7 +105,6 @@ const AnimeList = () => {
           </div>
         ))}
       </main>
-      <Footer/>
     </div>
   );
 };
