@@ -40,7 +40,7 @@ export default function GenrePage() {
   return (
    <div className="bg-gray-900 text-white min-h-screen">
   <Sidebar />
-  <main className="mr-64 mt-16 p-6">
+  <main className="mr-80 mt-16 p-6">
     <h2 className="text-2xl font-bold mb-4 border-b border-gray-700 pb-2">Daftar Genre</h2>
 
     {loading ? (
