@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Sidebar from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
-import Footer from "../../components/footer";
 
 type Genre = {
   title: string;
@@ -73,7 +72,6 @@ export default function GenrePage() {
       </div>
     )}
   </main>
-  <Footer/>
 </div>
 
   );

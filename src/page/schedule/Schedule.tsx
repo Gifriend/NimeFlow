@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import Footer from "../../components/footer";
 
 const dayMap: Record<string, string> = {
   Monday: "Senin",
@@ -129,7 +128,6 @@ export default function DesktopAnimeScheduleApp() {
         <span>Status: Online</span>
         <span>Last updated: {new Date().toLocaleString("id-ID")}</span>
       </footer>
-      <Footer/>
     </div>
   );
 }

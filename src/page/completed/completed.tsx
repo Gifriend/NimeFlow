@@ -3,7 +3,6 @@ import Sidebar from "../../components/Sidebar";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Footer from "../../components/footer";
 
 export default function Completed() {
   const [completedAnimeData, setCompletedAnimeData] = useState<any[]>([]);
@@ -137,7 +136,6 @@ export default function Completed() {
           </div>
         )}
       </main>
-      <Footer />
     </div>
   );
 }
