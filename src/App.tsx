@@ -20,6 +20,10 @@ import EpisodeStreamingPage from './page/streaming/EpisodeStreamingPage';
 import AnimeDetail from './page/animedetail/AnimeDetailPage';
 import HomePage from './page/home/home';
 import Recent from './page/recent/recent';
+import Movie from './page/movie/movie';
+import Popular from './page/popular/popular';
+import Batch from './page/batch/batch';
+import ScrollToTop from './components/scrolltop';
 
 function AppWrapper() {
   const location = useLocation();
@@ -46,6 +50,9 @@ function AppWrapper() {
         <Route path="/episode/:episodeId" element={<EpisodeStreamingPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/recent" element={<Recent />} />
+        <Route path="/movie" element={<Movie />} />
+        <Route path="/popular" element={<Popular />} />
+        <Route path="/batch" element={<Batch />} />
       </Routes>
 
       {!hideLayout && <Footer />} {/* ✅ Tambahkan Footer di sini */}
@@ -57,6 +64,7 @@ function App() {
   return (
     <Router>
       <AppWrapper />
+      <ScrollToTop />
     </Router>
   );
 }

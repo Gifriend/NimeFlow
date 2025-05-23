@@ -1,14 +1,13 @@
 // pages/genre/[genreId]/genreId.tsx
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import Sidebar from "../../../components/Sidebar";
 import { FaStar } from "react-icons/fa";
-import { HiArrowLeft } from "react-icons/hi";
+import BackButton from "../../../components/backbutton";
 
 export default function GenreDetailPage() {
   const { genreId } = useParams();
-  const navigate = useNavigate();
   const [animeList, setAnimeList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,16 +30,7 @@ export default function GenreDetailPage() {
     <div className="bg-gray-900 text-white min-h-screen">
       <Sidebar />
       <main className="mr-80 mt-15 p-6">
-        {/* Tombol Back ke Genre List */}
-        <button
-        onClick={() => navigate("/genre")}
-        className="mb-3 p-2 rounded-full border-2 border-blue-500 text-blue-500
-                    hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-500 
-                    hover:text-white transition-colors flex items-center justify-center"
-        aria-label="Back to Genre"
-        >
-        <HiArrowLeft size={18} />
-        </button>
+        <BackButton to="/genre" />
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-2 capitalize">{genreId} Anime</h2>
           <p className="text-gray-400">Daftar anime dengan genre {genreId}</p>
