@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import {useRef, useEffect, useState } from "react";
 import axios from "axios";
 import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
-import { FaPlay, FaStar } from "react-icons/fa";
+import { FaPlay } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import MovieList from "./homecomponent/movielist";
+import PopularList from "./homecomponent/popularlist";
 
 interface AnimeItem {
   title: string;
@@ -11,19 +13,16 @@ interface AnimeItem {
   releasedOn?: string;
   animeId: string;
   href: string;
-  type?: string;
-  status?: string;
-  score?: string;
   releaseDate: string;
   genreList: { title: string }[];
-  samehadakuUrl?: string;
 }
 
 export default function HomePage() {
   const [animeList, setAnimeList] = useState<AnimeItem[]>([]);
-  const [batchList, setBatchList] = useState<AnimeItem[]>([]);
   const [movieList, setMovieList] = useState<AnimeItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
 
 useEffect(() => {
   const fetchData = async () => {
@@ -32,11 +31,7 @@ useEffect(() => {
       const res = await axios.get(`${apiUrl}/samehadaku/home`);
       const data = res.data?.data;
 
-      console.log("API URL:", import.meta.env.VITE_API_BASE_URL);
-      console.log("API Response Test:", data);
-
       setAnimeList(data?.recent?.animeList || []);
-      setBatchList(data?.batch?.batchList || []);
       setMovieList(data?.movie?.animeList || []);
     } catch (error) {
       console.error("Error fetching data", error);
@@ -123,44 +118,63 @@ useEffect(() => {
           <section>
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-2xl font-semibold">Episode Terbaru</h3>
-              <button className="text-sm text-purple-400 hover:underline">More</button>
+              <Link to="/recent" className="text-sm text-purple-400 hover:underline">
+              More
+            </Link>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          {animeList.length > 0 ? (
-            animeList.map((anime, index) => (
-              <Link
-                to={`/anime/${anime.animeId}`}
-                key={index}
-                className="block rounded-lg overflow-hidden shadow-lg hover:shadow-purple-400/50 transition"
+            <div className="relative">
+              {/* Panah kiri */}
+              <button
+                onClick={() => scrollRef.current?.scrollBy({ left: -450, behavior: 'smooth' })}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full"
               >
-                <img
-                  src={anime.poster}
-                  alt={anime.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-2">
-                  <h3 className="text-sm font-semibold truncate">{anime.title}</h3>
-                  <p className="text-xs text-gray-500">{anime.releasedOn}</p>
-                </div>
-              </Link>
-            ))
-          ) : (
-            <p className="text-sm text-gray-400">Tidak ada episode terbaru.</p>
-          )}
-        </div>
-          </section>
-          {/* Batch Download */}
-          <section>
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-2xl font-semibold">Download Batch</h3>
-              <button className="text-sm text-purple-400 hover:underline">More</button>
+                <BiLeftArrowAlt size={24} />
+              </button>
+                  <div
+                ref={scrollRef}
+                className="flex overflow-x-auto gap-4 scrollbar-hide scroll-smooth px-8"
+              >
+                {animeList.map((anime) => (
+                  <Link
+                    to={`/anime/${anime.animeId}`}
+                    key={anime.animeId}
+                    className="flex-shrink-0 w-40 rounded-lg overflow-hidden shadow-lg hover:shadow-purple-400/50 transition"
+                  >
+                    <div className="relative">
+                      <img
+                        src={anime.poster}
+                        alt={anime.title}
+                        className="w-full h-56 object-cover"
+                      />
+                      {/* Badge Episode */}
+                      <div className="absolute top-2 left-2 bg-gradient-to-r from-blue-600 to-purple-500 text-xs text-white px-2 py-0.5 rounded">
+                        Ep {anime.episodes}
+                      </div>
+                    </div>
+                    <div className="p-2">
+                      <h3 className="text-sm font-semibold truncate">{anime.title}</h3>
+                      <p className="text-xs text-gray-500">{anime.releasedOn}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+              {/* Panah kanan */}
+              <button
+                onClick={() => scrollRef.current?.scrollBy({ left: 450, behavior: 'smooth' })}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full"
+              >
+                <BiRightArrowAlt size={24} />
+              </button>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {batchList.map((anime) => (
-                <AnimeCard key={anime.animeId} anime={anime} />
-              ))}
-            </div>
           </section>
+          <MovieList />
+          <PopularList />
+          <div className="flex justify-between items-center mb-4">
+              <h3 className="text-2xl font-semibold">Download Batch Anime</h3>
+              <Link to="/batch" className="text-sm text-purple-400 hover:underline">
+              More
+            </Link>
+            </div>
         </div>
 
         {/* Anime Movie Sidebar */}
@@ -200,44 +214,6 @@ useEffect(() => {
             </div>
           ))}
         </aside>
-      </div>
-    </div>
-  );
-}
-
-// Reusable anime card
-function AnimeCard({ anime }: { anime: AnimeItem }) {
-  return (
-    <div className="bg-gray-800 w-full rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all">
-      <div className="relative">
-        <img
-          src={anime.poster}
-          alt={anime.title}
-          className="w-full h-64 object-cover"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.onerror = null;
-            target.src = "/fallback.jpg";
-          }}
-        />
-        {anime.type && (
-          <div className="absolute top-2 left-2 bg-gradient-to-r from-blue-600 to-purple-500 text-xs px-2 py-0.5 rounded">
-            {anime.type}
-          </div>
-        )}
-        {anime.score && (
-          <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold px-2 py-0.5 rounded flex items-center">
-            <FaStar className="text-black mr-1" /> {anime.score}
-          </div>
-        )}
-        {anime.status && (
-          <div className="absolute bottom-2 right-2 bg-gray-900/70 text-white text-xs px-2 py-0.5 rounded">
-            {anime.status}
-          </div>
-        )}
-      </div>
-      <div className="p-3">
-        <h3 className="font-medium text-sm leading-tight line-clamp-2">{anime.title}</h3>
       </div>
     </div>
   );

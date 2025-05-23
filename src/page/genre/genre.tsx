@@ -20,7 +20,6 @@ export default function GenrePage() {
     const fetchGenres = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/samehadaku/genres`);
-        console.log("Genre response:", res.data);
 
         if (Array.isArray(res.data.data.genreList)) {
           setGenres(res.data.data.genreList);

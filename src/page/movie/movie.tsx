@@ -3,9 +3,10 @@ import Sidebar from "../../components/Sidebar";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import BackButton from "../../components/backbutton";
 
-export default function Ongoing() {
-  const [ongoingAnimeData, setOngoingAnimeData] = useState<any[]>([]);
+export default function Movie() {
+  const [movieAnimeData, setMovieAnimeData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -15,7 +16,7 @@ export default function Ongoing() {
     const fetchOngoingAnime = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/samehadaku/ongoing`,
+          `${import.meta.env.VITE_API_BASE_URL}/samehadaku/movies`,
           {
             params: {
               page: currentPage,
@@ -24,7 +25,7 @@ export default function Ongoing() {
           }
         );
 
-        setOngoingAnimeData(res.data.data.animeList);
+        setMovieAnimeData(res.data.data.animeList);
         setTotalPages(res.data.pagination.totalPages);
       } catch (error) {
         console.error("Error fetching ongoing anime:", error);
@@ -57,17 +58,17 @@ export default function Ongoing() {
       <Sidebar />
 
       <main className="mr-80 mt-16 p-6">
+      <BackButton to="/home" />
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-2">Anime Sedang Tayang</h2>
-          <p className="text-gray-400">Daftar anime yang sedang tayang minggu ini</p>
+          <h2 className="text-2xl font-bold mb-2">Anime Movie</h2>
+          <p className="text-gray-400">Daftar anime movie</p>
         </div>
-
         {loading ? (
           <p>Loading...</p>
         ) : (
           <div>
             <div className="grid grid-cols-5 gap-4">
-              {ongoingAnimeData.map((anime, index) => (
+              {movieAnimeData.map((anime, index) => (
                  <Link to={`/anime/${anime.animeId}`} key={index} className="block" >
                 <div
                   className="bg-gray-800 w-54 h-full rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all"
