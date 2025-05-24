@@ -78,15 +78,13 @@ useEffect(() => {
                 <h2 className="text-3xl font-bold mb-4">{anime.title}</h2>
                 <p className="text-lg mb-2">Episode: {anime.episodes}</p>
                 <p className="text-sm text-gray-400 mb-6">Rilis: {anime.releasedOn}</p>
-                <a
-                  href={anime.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to={`/anime/${anime.animeId}`}
                   className="inline-flex items-center gap-2 w-30 bg-gradient-to-r from-blue-600 to-purple-500 hover:bg-purple-700 transition px-5 py-2 rounded-full text-white font-semibold"
                 >
                   <FaPlay size={14} />
                   Tonton
-                </a>
+                </Link>
               </div>
               <div className="flex-1">
                 <img
