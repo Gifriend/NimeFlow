@@ -3,7 +3,7 @@ import Sidebar from "../../components/Sidebar";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import BackButton from "../../components/backbutton";
+import MovieBackButton from "../../components/moviebackbutton";
 
 export default function Movie() {
   const [movieAnimeData, setMovieAnimeData] = useState<any[]>([]);
@@ -58,7 +58,7 @@ export default function Movie() {
       <Sidebar />
 
       <main className="mr-80 mt-16 p-6">
-      <BackButton to="/home" />
+      <MovieBackButton />
         <div className="mb-8">
           <h2 className="text-2xl font-bold mb-2">Anime Movie</h2>
           <p className="text-gray-400">Daftar anime movie</p>
