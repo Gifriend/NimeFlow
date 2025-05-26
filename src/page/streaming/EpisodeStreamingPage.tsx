@@ -2,6 +2,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import BackButton from '../../components/backbutton';
 
 export default function EpisodeStreamingPage() {
   const { episodeId } = useParams<{ episodeId: string }>();
@@ -13,7 +14,7 @@ export default function EpisodeStreamingPage() {
     const fetchEpisode = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/samehadaku/episode/${episodeId}`
+          `${import.meta.env.VITE_API_BASE_URL}/otakudesu/episode/${episodeId}`
         );
         setEpisodeData(response.data.data);
       } catch (err) {
@@ -53,6 +54,7 @@ export default function EpisodeStreamingPage() {
   return (
     <div className=" text-white min-w-full mx-auto mt-10">
       <div className="bg-gray-800 p-6 rounded-xl shadow-md">
+        <BackButton onClick={() => window.history.back()} />
         <h1 className="text-3xl font-bold mb-2">{episodeData.title}</h1>
         {episodeData.quality && (
           <span className="inline-block bg-blue-600 text-white text-sm px-3 py-1 rounded-full mb-4">

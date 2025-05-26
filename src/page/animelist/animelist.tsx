@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Sidebar from "../../components/Sidebar";
 import { Link } from "react-router-dom";
 
 type AnimeItem = {
   title: string;
   animeId: string;
   href: string;
-  samehadakuUrl: string;
+  otakudesuUrl: string;
 };
 
 type AnimeGroup = {
@@ -24,7 +23,7 @@ const AnimeList = () => {
     const fetchAnimeList = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/samehadaku/anime`
+          `${import.meta.env.VITE_API_BASE_URL}/otakudesu/anime`
         );
 
         const groups = Array.isArray(res.data.data.list) ? res.data.data.list : [];
@@ -45,7 +44,7 @@ const AnimeList = () => {
         <main className="p-6 mr-64">
           <p>Loading anime list...</p>
         </main>
-        <Sidebar />
+        {/* <Sidebar /> */}
       </div>
     );
   }
@@ -56,7 +55,7 @@ const AnimeList = () => {
         <main className="p-6 mr-64">
           <p>No anime found.</p>
         </main>
-        <Sidebar />
+        {/* <Sidebar /> */}
       </div>
     );
   }
@@ -72,7 +71,7 @@ const AnimeList = () => {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen flex">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <main className="flex-1 p-6 mt-16 overflow-auto">
         <h2 className="text-2xl md:text-2xl font-bold mb-2">Anime List</h2>
 

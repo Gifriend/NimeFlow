@@ -1,14 +1,13 @@
 // pages/genre/genre.tsx
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Sidebar from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 
 type Genre = {
   title: string;
   genreId: string;
   href: string;
-  samehadakuUrl: string;
+  otakudesuUrl: string;
 };
 
 export default function GenrePage() {
@@ -19,7 +18,7 @@ export default function GenrePage() {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/samehadaku/genres`);
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/otakudesu/genres`);
 
         if (Array.isArray(res.data.data.genreList)) {
           setGenres(res.data.data.genreList);
@@ -38,7 +37,7 @@ export default function GenrePage() {
 
   return (
    <div className="bg-gray-900 text-white min-h-screen">
-  <Sidebar />
+  {/* <Sidebar /> */}
   <main className="mr-80 mt-16 p-6">
     <h2 className="text-2xl font-bold mb-4 border-b border-gray-700 pb-2">Daftar Genre</h2>
 

@@ -15,7 +15,7 @@ export default function Completed() {
     const fetchCompletedAnime = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/samehadaku/completed`,
+          `${import.meta.env.VITE_API_BASE_URL}/otakudesu/completed`,
           {
             params: {
               page: currentPage,
@@ -57,7 +57,7 @@ export default function Completed() {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      <Sidebar />
+      {/* <Sidebar /> */}
 
       <main className="mr-80 mt-16 p-6">
         <div className="mb-8">

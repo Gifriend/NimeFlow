@@ -12,7 +12,7 @@ const MovieList = () => {
     const fetchData = async () => {
       try {
         const apiUrl = import.meta.env.VITE_API_BASE_URL;
-        const res = await axios.get(`${apiUrl}/samehadaku/movies`);
+        const res = await axios.get(`${apiUrl}/otakudesu/movies`);
         setMovieList(res.data.data.animeList);
       } catch (error) {
         console.error("Error fetching movie list", error);

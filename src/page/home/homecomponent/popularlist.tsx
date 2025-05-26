@@ -12,7 +12,7 @@ const PopularList = () => {
     const fetchData = async () => {
       try {
         const apiUrl = import.meta.env.VITE_API_BASE_URL;
-        const res = await axios.get(`${apiUrl}/samehadaku/popular`);
+        const res = await axios.get(`${apiUrl}/otakudesu/popular`);
         setPopularList(res.data.data.animeList);
       } catch (error) {
         console.error("Error fetching popular list", error);

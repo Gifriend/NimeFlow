@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Sidebar from "../../../components/Sidebar";
 import { FaStar } from "react-icons/fa";
 import BackButton from "../../../components/backbutton";
 
@@ -14,7 +13,7 @@ export default function GenreDetailPage() {
   useEffect(() => {
     const fetchGenreAnime = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/samehadaku/genres/${genreId}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/otakudesu/genres/${genreId}`);
         setAnimeList(res.data.data.animeList);
       } catch (error) {
         console.error("Error fetching genre anime:", error);
@@ -28,7 +27,7 @@ export default function GenreDetailPage() {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <main className="mr-80 mt-15 p-6">
         <BackButton to="/genre" />
         <div className="mb-8">

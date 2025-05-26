@@ -15,7 +15,7 @@ export default function Recent() {
     const fetchOngoingAnime = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/samehadaku/recent`,
+          `${import.meta.env.VITE_API_BASE_URL}/otakudesu/recent`,
           {
             params: {
               page: currentPage,

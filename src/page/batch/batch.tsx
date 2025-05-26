@@ -16,7 +16,7 @@
         const fetchOngoingAnime = async () => {
           try {
             const res = await axios.get(
-              `${import.meta.env.VITE_API_BASE_URL}/samehadaku/batch`,
+              `${import.meta.env.VITE_API_BASE_URL}/otakudesu/batch`,
               {
                 params: {
                   page: currentPage,

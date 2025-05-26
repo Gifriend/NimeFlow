@@ -15,7 +15,7 @@ const SearchResult: React.FC = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/samehadaku/search`,
+          `${import.meta.env.VITE_API_BASE_URL}/otakudesu/search`,
           { params: { q } }
         );
 

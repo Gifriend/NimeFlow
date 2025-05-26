@@ -16,7 +16,7 @@ export default function Movie() {
     const fetchOngoingAnime = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/samehadaku/movies`,
+          `${import.meta.env.VITE_API_BASE_URL}/otakudesu/movies`,
           {
             params: {
               page: currentPage,
