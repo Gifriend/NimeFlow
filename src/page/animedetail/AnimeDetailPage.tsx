@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowLeft, Calendar, Clock, Star, Users, Play } from 'lucide-react';
 import { useParams } from 'react-router-dom';
+import BackButton from '../../components/backbutton';
 
 interface Score {
   value: string;
@@ -157,8 +158,7 @@ export default function AnimeDetail() {
   return (
     <div className="bg-gray-900 text-white min-h-screen">
       {/* Header */}
-      <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900 z-10"></div>
+      <div className="relative mt-15">
         <div 
           className="h-64 bg-cover bg-center bg-gray-800"
           style={{ 

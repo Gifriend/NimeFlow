@@ -36,13 +36,13 @@ export default function RegisterForm() {
     }
 
     try {
-      const response = await api.post('/auth/register', {
+      const response = await api.post(`/api/auth/register`, {
         email,
         password,
       });
-      if (response.status == 201) {
-        // Redirect ke login setelah registrasi berhasil
-        navigate('/login');
+      if (response.status == 201 || response.status == 200) {
+        setError('registrasi berhasil. silahkan masuk');
+        navigate('/');
       }
     } catch (err: any) {
       setError(
@@ -93,7 +93,7 @@ export default function RegisterForm() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 text-black focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   placeholder="Masukkan email Anda"
                 />
               </div>
@@ -114,7 +114,7 @@ export default function RegisterForm() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 text-black focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   placeholder="Masukkan password Anda"
                 />
                 <button
@@ -167,7 +167,7 @@ export default function RegisterForm() {
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 text-black focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   placeholder="Konfirmasi password Anda"
                 />
                 <button

@@ -1,6 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+
+interface AnimeItem {
+  title: string;
+  poster: string;
+  episodes?: string | number;
+  releaseDay?: string;
+  latestReleaseDate?: string;
+  lastReleaseDate?: string;
+  animeId: string;
+  href: string;
+  score?: string;
+  otakudesuUrl?: string;
+  status?: string;
+}
 
 const SearchResult: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -18,6 +32,7 @@ const SearchResult: React.FC = () => {
           `${import.meta.env.VITE_API_BASE_URL}/otakudesu/search`,
           { params: { q } }
         );
+        console.log('Search response:', response.data);
 
         const animeList = response?.data?.data?.animeList;
         if (Array.isArray(animeList)) {
@@ -26,7 +41,6 @@ const SearchResult: React.FC = () => {
           console.warn('animeList is not an array:', response.data);
           setResults([]);
         }
-
       } catch (err) {
         console.error(err);
         setResults([]);
@@ -47,8 +61,11 @@ const SearchResult: React.FC = () => {
         <p>No results found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {results.map((item: any, index: number) => (
-            <div key={index} className="bg-gray-800 p-4 rounded-lg shadow-lg">
+          {results.map((item: AnimeItem, index: number) => (
+            <Link
+              to={`/anime/${item.animeId}`}
+              key={item.animeId}
+              className="bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-purple-400/50 transition block">
               <img
                 src={item.poster}
                 alt={item.title}
@@ -56,8 +73,10 @@ const SearchResult: React.FC = () => {
               />
               <h3 className="text-lg font-semibold mt-2">{item.title}</h3>
               <p className="text-sm text-gray-300">Status: {item.status}</p>
-              <p className="text-sm text-gray-300">Score: {item.score}</p>
-            </div>
+              <p className="text-sm text-gray-300">
+                Score: {item.score || 'N/A'}
+              </p>
+            </Link>
           ))}
         </div>
       )}
