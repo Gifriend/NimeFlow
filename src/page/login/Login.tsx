@@ -30,14 +30,12 @@ export default function Login() {
         password,
       });
 
-      const payload = response.data;
-      console.log('Payload:', payload);
       if (response.status === 200 || response.status === 201) {
-        document.cookie = `token=${payload.token}; path=/`; 
-        navigate('/home');
+        document.cookie = `token=${response.data.token}; path=/; max-age=86400`; 
+        navigate('/home',{ replace: true });
       } else {
         alert(
-          payload.message ||
+          response.data.message ||
             'Login gagal. Periksa kembali email dan password Anda.'
         );
       }
@@ -61,10 +59,10 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="ml-6 text-center text-3xl font-extrabold text-black">
-          Selamat Datang <br /> Silakan Masuk!
+        <h2 className="ml-6 text-center text-3xl font-extrabold text-white">
+          Selamat Datang <br /> Silahkan Masuk!
         </h2>
       </div>
 

@@ -1,6 +1,6 @@
 // pages/genre/[genreId]/genreId.tsx
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom"; // Tambahkan Link
 import axios from "axios";
 import { FaStar } from "react-icons/fa";
 import BackButton from "../../../components/backbutton";
@@ -27,7 +27,6 @@ export default function GenreDetailPage() {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      {/* <Sidebar /> */}
       <main className="mr-80 mt-15 p-6">
         <BackButton to="/genre" />
         <div className="mb-8">
@@ -40,7 +39,8 @@ export default function GenreDetailPage() {
         ) : (
           <div className="grid grid-cols-5 gap-4">
             {animeList.map((anime, index) => (
-              <div
+              <Link 
+                to={`/anime/${anime.animeId}`} // Tambahkan Link navigasi
                 key={index}
                 className="bg-gray-800 w-54 rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all"
               >
@@ -68,7 +68,7 @@ export default function GenreDetailPage() {
                   </p>
                   <h3 className="font-medium text-sm leading-tight">{anime.title}</h3>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

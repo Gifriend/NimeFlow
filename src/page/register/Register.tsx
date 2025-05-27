@@ -60,10 +60,10 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Selamat Datang <br /> Silakan Mendaftar!
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
+          Selamat Datang <br /> Silahkan Mendaftar!
         </h2>
       </div>
 

@@ -1,10 +1,10 @@
-// EpisodeStreamingPage.tsx
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import BackButton from '../../components/backbutton';
 
 export default function EpisodeStreamingPage() {
+  const navigate = useNavigate();
   const { episodeId } = useParams<{ episodeId: string }>();
   const [episodeData, setEpisodeData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -13,8 +13,18 @@ export default function EpisodeStreamingPage() {
   useEffect(() => {
     const fetchEpisode = async () => {
       try {
+        const token = document.cookie
+          .split('; ')
+          .find((row) => row.startsWith('token='))
+          ?.split('=')[1];
+
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/otakudesu/episode/${episodeId}`
+          `${import.meta.env.VITE_API_BASE_URL}/otakudesu/episode/${episodeId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         setEpisodeData(response.data.data);
       } catch (err) {
@@ -54,7 +64,7 @@ export default function EpisodeStreamingPage() {
   return (
     <div className=" text-white min-w-full mx-auto mt-10">
       <div className="bg-gray-800 p-6 rounded-xl shadow-md">
-        <BackButton onClick={() => window.history.back()} />
+        <BackButton onClick={() => navigate(-1)} />
         <h1 className="text-3xl font-bold mb-2">{episodeData.title}</h1>
         {episodeData.quality && (
           <span className="inline-block bg-blue-600 text-white text-sm px-3 py-1 rounded-full mb-4">
@@ -86,16 +96,21 @@ export default function EpisodeStreamingPage() {
                   {Object.entries(episodeData.downloadUrl).map(
                     ([resolution, links]: [string, any]) =>
                       links.map((link: any, idx: number) => (
-                        <tr key={`${resolution}-${idx}`} className="hover:bg-gray-700">
-                          <td className="p-3 border border-gray-700">{resolution}</td>
-                          <td className="p-3 border border-gray-700">{link.name}</td>
+                        <tr
+                          key={`${resolution}-${idx}`}
+                          className="hover:bg-gray-700">
+                          <td className="p-3 border border-gray-700">
+                            {resolution}
+                          </td>
+                          <td className="p-3 border border-gray-700">
+                            {link.name}
+                          </td>
                           <td className="p-3 border border-gray-700">
                             <a
                               href={link.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-blue-400 hover:underline"
-                            >
+                              className="text-blue-400 hover:underline">
                               Download
                             </a>
                           </td>

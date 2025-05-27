@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ArrowLeft, Calendar, Clock, Star, Users, Play } from 'lucide-react';
-import { useParams } from 'react-router-dom';
-import BackButton from '../../components/backbutton';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface Score {
   value: string;
@@ -85,6 +84,7 @@ const DetailSkeleton = () => (
 );
 
 export default function AnimeDetail() {
+  const navigate = useNavigate();
   const { animeId } = useParams();
   const [anime, setAnime] = useState<AnimeDetailData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -144,7 +144,7 @@ export default function AnimeDetail() {
         <div className="text-center">
           <div className="text-xl mb-4">Anime tidak ditemukan</div>
           <button 
-            onClick={() => window.history.back()} 
+            onClick={()=>navigate(-1)} 
             className="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-lg transition"
           >
             <ArrowLeft className="inline w-4 h-4 mr-2" />

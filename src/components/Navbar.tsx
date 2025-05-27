@@ -112,19 +112,19 @@ const Navbar: React.FC = () => {
                     }
                   }}
                 />
+                <button
+                  onClick={() => {
+                    if (searchQuery.trim()) {
+                      navigate(
+                        `/search?q=${encodeURIComponent(searchQuery.trim())}`
+                      );
+                      setSearchQuery('');
+                    }
+                  }}
+                  className="absolute right-10 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white hover:cursor-pointer">
+                  <FaSearch />
+                </button>
               </div>
-              <button
-                onClick={() => {
-                  if (searchQuery.trim()) {
-                    navigate(
-                      `/search?q=${encodeURIComponent(searchQuery.trim())}`
-                    );
-                    setSearchQuery('');
-                  }
-                }}
-                className="absolute right-20 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white hover:cursor-pointer">
-                <FaSearch />
-              </button>
 
               {/* Notifications
               <button className="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors relative">
@@ -154,16 +154,16 @@ const Navbar: React.FC = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link to={'/'}>
-                        <button
-                          onClick={() => {
-                            console.log('Logout clicked');
-                            setShowDropdown(false);
-                          }}
-                          className="w-full text-left px-4 py-2 hover:bg-gray-100">
-                          Logout
-                        </button>
-                      </Link>
+                      <button
+                        onClick={() => {
+                          document.cookie =
+                            'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                          navigate('/');
+                          setShowDropdown(false);
+                        }}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100">
+                        Logout
+                      </button>
                     </li>
                   </ul>
                 </div>
