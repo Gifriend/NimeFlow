@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Sidebar from "../../components/Sidebar";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import { Link } from "react-router-dom";

@@ -17,8 +17,18 @@ export default function GenrePage() {
 
   useEffect(() => {
     const fetchGenres = async () => {
+      const token = document.cookie
+          .split('; ')
+          .find((row) => row.startsWith('token='))
+          ?.split('=')[1];
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/otakudesu/genres`);
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/otakudesu/genres`,
+          {
+            headers:{
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
 
         if (Array.isArray(res.data.data.genreList)) {
           setGenres(res.data.data.genreList);

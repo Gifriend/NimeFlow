@@ -21,9 +21,18 @@ const AnimeList = () => {
 
   useEffect(() => {
     const fetchAnimeList = async () => {
+      const token = document.cookie
+          .split('; ')
+          .find((row) => row.startsWith('token='))
+          ?.split('=')[1];
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/otakudesu/anime`
+          `${import.meta.env.VITE_API_BASE_URL}/otakudesu/anime`,
+          {
+            headers:{
+              Authorization: `Bearer ${token}`,
+            },
+          },
         );
 
         const groups = Array.isArray(res.data.data.list) ? res.data.data.list : [];

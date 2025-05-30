@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+import Cookies from 'js-cookie';
 
 interface AnimeItem {
   title: string;
@@ -90,15 +91,23 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const getToken = () => Cookies.get('token');
 
   useEffect(() => {
     const fetchData = async () => {
+      const token = getToken()
       try {
         setLoading(true);
         setError(null);
         
         // Replace this URL with your actual API endpoint
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/otakudesu/home`);
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/otakudesu/home`,
+          {
+            headers:{
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 export default function Ongoing() {
   const [ongoingAnimeData, setOngoingAnimeData] = useState<any[]>([]);
@@ -9,9 +10,11 @@ export default function Ongoing() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageNumbers, setPageNumbers] = useState<number[]>([]);
+  const getToken = ()=> Cookies.get('token');
 
   useEffect(() => {
     const fetchOngoingAnime = async () => {
+      const token = getToken();
       try {
         const res = await axios.get(
           `${import.meta.env.VITE_API_BASE_URL}/otakudesu/ongoing`,
@@ -19,6 +22,9 @@ export default function Ongoing() {
             params: {
               page: currentPage,
               order: "latest",
+            },
+            headers:{
+              Authorization: `Bearer ${token}`,
             },
           }
         );

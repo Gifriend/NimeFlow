@@ -61,7 +61,7 @@ const SearchResult: React.FC = () => {
         <p>No results found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {results.map((item: AnimeItem, index: number) => (
+          {results.map((item: AnimeItem,) => (
             <Link
               to={`/anime/${item.animeId}`}
               key={item.animeId}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import Cookies  from 'js-cookie';
 
 const dayMap: Record<string, string> = {
   Monday: "Senin",
@@ -17,12 +18,19 @@ export default function DesktopAnimeScheduleApp() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const getToken = ()=> Cookies.get('token')
 
   useEffect(() => {
     const fetchSchedule = async () => {
+      const token = getToken();
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/otakudesu/schedule`
+          `${import.meta.env.VITE_API_BASE_URL}/otakudesu/schedule`,
+          {
+            headers:{
+              Authorization: `Bearer ${token}`,
+            },
+          },
         );
 
         const fetchedData = response.data.data.days;

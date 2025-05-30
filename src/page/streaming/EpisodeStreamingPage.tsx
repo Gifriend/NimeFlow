@@ -39,6 +39,12 @@ export default function EpisodeStreamingPage() {
     }
   }, [episodeId]);
 
+  const handleEpisodeNavigation = (episode: any) => {
+    if (episode && episode.episodeId) {
+      navigate(`/episode/${episode.episodeId}`);
+    }
+  };
+
   if (loading)
     return (
       <div className="flex items-center justify-center h-screen">
@@ -62,24 +68,50 @@ export default function EpisodeStreamingPage() {
     );
 
   return (
-    <div className=" text-white min-w-full mx-auto mt-10">
+    <div className="text-white min-w-full mx-auto mt-10">
       <div className="bg-gray-800 p-6 rounded-xl shadow-md">
         <BackButton onClick={() => navigate(-1)} />
-        <h1 className="text-3xl font-bold mb-2">{episodeData.title}</h1>
-        {episodeData.quality && (
-          <span className="inline-block bg-blue-600 text-white text-sm px-3 py-1 rounded-full mb-4">
-            {episodeData.quality}
-          </span>
-        )}
+        
+        {/* Episode Navigation */}
+        <div className="flex justify-between mb-6">
+          <button
+            onClick={() => handleEpisodeNavigation(episodeData.prevEpisode)}
+            disabled={!episodeData.hasPrevEpisode}
+            className={`px-4 py-2 rounded-md ${
+              episodeData.hasPrevEpisode
+                ? 'bg-blue-600 hover:bg-blue-700'
+                : 'bg-gray-600 cursor-not-allowed'
+            }`}
+          >
+            Prev Episode
+          </button>
+          
+          <h1 className="text-3xl font-bold text-center">{episodeData.title}</h1>
+          
+          <button
+            onClick={() => handleEpisodeNavigation(episodeData.nextEpisode)}
+            disabled={!episodeData.hasNextEpisode}
+            className={`px-4 py-2 rounded-md ${
+              episodeData.hasNextEpisode
+                ? 'bg-blue-600 hover:bg-blue-700'
+                : 'bg-gray-600 cursor-not-allowed'
+            }`}
+          >
+            Next Episode
+          </button>
+        </div>
 
+        {/* Streaming Player */}
         <div className="mb-6 aspect-video">
           <iframe
             src={episodeData.defaultStreamingUrl}
             className="w-full h-full rounded-md"
             allowFullScreen
+            title="Anime Player"
           />
         </div>
 
+        {/* Download Section */}
         {episodeData.downloadUrl && (
           <div className="mt-8">
             <h2 className="text-2xl font-semibold mb-4">Download Options</h2>
@@ -87,35 +119,52 @@ export default function EpisodeStreamingPage() {
               <table className="min-w-full table-auto border border-gray-700 text-sm">
                 <thead>
                   <tr className="bg-gray-700 text-left">
-                    <th className="p-3 border border-gray-600">Resolution</th>
+                    <th className="p-3 border border-gray-600">Quality</th>
+                    <th className="p-3 border border-gray-600">Size</th>
                     <th className="p-3 border border-gray-600">Host</th>
                     <th className="p-3 border border-gray-600">Link</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {Object.entries(episodeData.downloadUrl).map(
-                    ([resolution, links]: [string, any]) =>
-                      links.map((link: any, idx: number) => (
-                        <tr
-                          key={`${resolution}-${idx}`}
-                          className="hover:bg-gray-700">
+                  {episodeData.downloadUrl.qualities.map(
+                    (quality: any, index: number) => (
+                      quality.urls.map((urlItem: any, urlIndex: number) => (
+                        <tr 
+                          key={`${index}-${urlIndex}`}
+                          className="hover:bg-gray-700"
+                        >
+                          {urlIndex === 0 && (
+                            <>
+                              <td 
+                                rowSpan={quality.urls.length}
+                                className="p-3 border border-gray-700 align-top"
+                              >
+                                {quality.title}
+                              </td>
+                              <td 
+                                rowSpan={quality.urls.length}
+                                className="p-3 border border-gray-700 align-top"
+                              >
+                                {quality.size}
+                              </td>
+                            </>
+                          )}
                           <td className="p-3 border border-gray-700">
-                            {resolution}
-                          </td>
-                          <td className="p-3 border border-gray-700">
-                            {link.name}
+                            {urlItem.title}
                           </td>
                           <td className="p-3 border border-gray-700">
                             <a
-                              href={link.url}
+                              href={urlItem.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-blue-400 hover:underline">
+                              className="text-blue-400 hover:underline"
+                            >
                               Download
                             </a>
                           </td>
                         </tr>
                       ))
+                    )
                   )}
                 </tbody>
               </table>

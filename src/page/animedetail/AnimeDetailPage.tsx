@@ -92,12 +92,21 @@ export default function AnimeDetail() {
 
   useEffect(() => {
     const fetchAnime = async () => {
+      const token = document.cookie
+          .split('; ')
+          .find((row) => row.startsWith('token='))
+          ?.split('=')[1];
       try {
         setLoading(true);
         setError('');
         
         const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/otakudesu/anime/${animeId}`
+          `${import.meta.env.VITE_API_BASE_URL}/otakudesu/anime/${animeId}`,
+          {
+            headers:{
+              Authorization: `Bearer ${token}`,
+            },
+          },
         );
         
         if (!response.ok) {
