@@ -1,6 +1,7 @@
-import { useRef, useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Play } from "lucide-react";
-import Cookies from 'js-cookie';
+import { useRef, useEffect, useState } from 'react';
+import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
+import axios from 'axios'; 
+import { Link } from 'react-router-dom';
 
 interface AnimeItem {
   title: string;
@@ -23,12 +24,13 @@ const LoadingSpinner = ({ size = 'md' }: LoadingSpinnerProps) => {
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-8 h-8',
-    lg: 'w-12 h-12'
+    lg: 'w-12 h-12',
   };
 
   return (
     <div className="flex items-center justify-center">
-      <div className={`${sizeClasses[size]} animate-spin rounded-full border-2 border-purple-500 border-t-transparent`}></div>
+      <div
+        className={`${sizeClasses[size]} animate-spin rounded-full border-2 border-purple-500 border-t-transparent`}></div>
     </div>
   );
 };
@@ -85,49 +87,68 @@ const LoadingSkeleton = () => (
 );
 
 export default function HomePage() {
+  console.log('HomePage component mounted');
   const [ongoingAnime, setOngoingAnime] = useState<AnimeItem[]>([]);
   const [completedAnime, setCompletedAnime] = useState<AnimeItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const getToken = () => Cookies.get('token');
 
   useEffect(() => {
+
     const fetchData = async () => {
-      const token = getToken()
       try {
         setLoading(true);
         setError(null);
-        
-        // Replace this URL with your actual API endpoint
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/otakudesu/home`,
-          {
-            headers:{
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        const homeData = result?.data;
 
-        if (!homeData) {
-          throw new Error("Data is undefined.");
+        // Pastikan URL benar dengan menambahkan debug log
+        const apiUrl = `${import.meta.env.VITE_API_BASE_URL}/otakudesu/home`;
+        console.log('Fetching data from:', apiUrl);
+
+        const response = await axios.get(apiUrl, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        console.log('API Response:', response);
+
+        // Periksa struktur respons
+        if (!response.data || !response.data.data) {
+          throw new Error('Invalid API response structure');
         }
+
+        const homeData = response.data.data;
+        console.log('Home data:', homeData);
 
         const ongoing = homeData.ongoing?.animeList || [];
         const completed = homeData.completed?.animeList || [];
 
+        console.log('Ongoing Anime count:', ongoing.length);
+        console.log('Completed Anime count:', completed.length);
+
         setOngoingAnime(ongoing);
         setCompletedAnime(completed);
       } catch (error) {
-        console.error("Error fetching data:", error);
-        setError(error instanceof Error ? error.message : "Failed to fetch data");
+        console.error('Error fetching data:', error);
+
+        // Tambahkan informasi error lebih detail
+        if (axios.isAxiosError(error)) {
+          const errorDetails = {
+            message: error.message,
+            response: error.response?.data,
+            status: error.response?.status,
+          };
+          console.error('Axios error details:', errorDetails);
+          setError(
+            `API Error: ${error.message} - Status: ${error.response?.status}`
+          );
+        } else if (error instanceof Error) {
+          setError(`Error: ${error.message}`);
+        } else {
+          setError('Unknown error occurred');
+        }
       } finally {
         setLoading(false);
       }
@@ -151,7 +172,9 @@ export default function HomePage() {
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + ongoingAnime.length) % ongoingAnime.length);
+    setCurrentIndex(
+      (prev) => (prev - 1 + ongoingAnime.length) % ongoingAnime.length
+    );
   };
 
   if (loading) {
@@ -164,10 +187,9 @@ export default function HomePage() {
         <div className="text-center">
           <div className="text-red-500 text-xl mb-4">Error Loading Data</div>
           <p className="text-gray-400 mb-4">{error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition"
-          >
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition">
             Try Again
           </button>
         </div>
@@ -193,30 +215,30 @@ export default function HomePage() {
         <div className="relative max-w-7xl mx-auto w-full overflow-hidden mb-10">
           <div
             className="flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-          >
+            style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
             {ongoingAnime.slice(0, 8).map((anime) => (
               <div
                 key={anime.animeId}
                 className="w-full flex-shrink-0 flex"
-                style={{ minWidth: "100%" }}
-              >
+                style={{ minWidth: '100%' }}>
                 <div className="flex-1 p-6 flex flex-col justify-center">
                   <h2 className="text-3xl font-bold mb-4">{anime.title}</h2>
-                  <p className="text-lg mb-2">Episode: {anime.episodes || "-"}</p>
+                  <p className="text-lg mb-2">
+                    Episode: {anime.episodes || '-'}
+                  </p>
                   <p className="text-sm text-gray-400 mb-2">
-                    Release Day: {anime.releaseDay || "-"}
+                    Release Day: {anime.releaseDay || '-'}
                   </p>
                   <p className="text-sm text-gray-400 mb-6">
-                    Latest: {anime.latestReleaseDate || "-"}
+                    Latest: {anime.latestReleaseDate || '-'}
                   </p>
-                  <a
-                    href={`/anime/${anime.animeId}`}
-                    className="inline-flex items-center gap-2 w-30 bg-gradient-to-r from-blue-600 to-purple-500 hover:bg-purple-700 transition px-5 py-2 rounded-full text-white font-semibold"
-                  >
+                  <Link
+                    to={`/anime/${encodeURIComponent(anime.animeId)}`}
+                    key={anime.animeId}
+                    className="inline-flex items-center gap-2 w-30 bg-gradient-to-r from-blue-600 to-purple-500 hover:bg-purple-700 transition px-5 py-2 rounded-full text-white font-semibold">
                     <Play size={14} />
                     Tonton
-                  </a>
+                  </Link>
                 </div>
                 <div className="flex-1">
                   <img
@@ -230,16 +252,14 @@ export default function HomePage() {
             ))}
           </div>
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-4 z-10">
-            <button 
-              onClick={handlePrev} 
-              className="bg-black/40 p-2 rounded-full hover:bg-opacity-75 transition"
-            >
+            <button
+              onClick={handlePrev}
+              className="bg-black/40 p-2 rounded-full hover:bg-opacity-75 transition">
               <ChevronLeft size={28} />
             </button>
-            <button 
-              onClick={handleNext} 
-              className="bg-black/40 p-2 rounded-full hover:bg-opacity-75 transition"
-            >
+            <button
+              onClick={handleNext}
+              className="bg-black/40 p-2 rounded-full hover:bg-opacity-75 transition">
               <ChevronRight size={28} />
             </button>
           </div>
@@ -256,46 +276,61 @@ export default function HomePage() {
           <section>
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-2xl font-semibold">Anime Ongoing</h3>
-              <a href="#" className="text-sm text-purple-400 hover:underline">More</a>
+              {/* <a href="#" className="text-sm text-purple-400 hover:underline">More</a> */}
             </div>
             {ongoingAnime.length > 0 ? (
               <div className="relative">
                 <button
-                  onClick={() => scrollRef.current?.scrollBy({ left: -450, behavior: 'smooth' })}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
-                >
+                  onClick={() =>
+                    scrollRef.current?.scrollBy({
+                      left: -450,
+                      behavior: 'smooth',
+                    })
+                  }
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition">
                   <ChevronLeft size={24} />
                 </button>
-                <div ref={scrollRef} className="flex overflow-x-auto gap-4 scrollbar-hide scroll-smooth px-8">
+                <div
+                  ref={scrollRef}
+                  className="flex overflow-x-auto gap-4 scrollbar-hide scroll-smooth px-8">
                   {ongoingAnime.map((anime) => (
-                    <a
-                      href={`/anime/${anime.animeId}`}
+                    <Link
+                      to={`/anime/${encodeURIComponent(anime.animeId)}`}
                       key={anime.animeId}
-                      className="flex-shrink-0 w-40 rounded-lg overflow-hidden shadow-lg hover:shadow-purple-400/50 transition"
-                    >
+                      className="flex-shrink-0 w-40 rounded-lg overflow-hidden shadow-lg hover:shadow-purple-400/50 transition">
                       <div className="relative">
-                        <img 
-                          src={anime.poster} 
-                          alt={anime.title} 
+                        <img
+                          src={anime.poster}
+                          alt={anime.title}
                           className="w-full h-56 object-cover"
                           loading="lazy"
                         />
                         <div className="absolute top-2 left-2 bg-gradient-to-r from-blue-600 to-purple-500 text-xs text-white px-2 py-0.5 rounded">
-                          Ep {anime.episodes || "?"}
+                          Ep {anime.episodes || '?'}
                         </div>
                       </div>
                       <div className="p-2">
-                        <h3 className="text-sm font-semibold truncate">{anime.title}</h3>
-                        <p className="text-xs text-gray-500">{anime.releaseDay || "-"}</p>
-                        <p className="text-xs text-gray-400">{anime.latestReleaseDate || "-"}</p>
+                        <h3 className="text-sm font-semibold truncate">
+                          {anime.title}
+                        </h3>
+                        <p className="text-xs text-gray-500">
+                          {anime.releaseDay || '-'}
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          {anime.latestReleaseDate || '-'}
+                        </p>
                       </div>
-                    </a>
+                    </Link>
                   ))}
                 </div>
                 <button
-                  onClick={() => scrollRef.current?.scrollBy({ left: 450, behavior: 'smooth' })}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
-                >
+                  onClick={() =>
+                    scrollRef.current?.scrollBy({
+                      left: 450,
+                      behavior: 'smooth',
+                    })
+                  }
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition">
                   <ChevronRight size={24} />
                 </button>
               </div>
@@ -311,20 +346,19 @@ export default function HomePage() {
           <section>
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-2xl font-semibold">Anime Completed</h3>
-              <a href="#" className="text-sm text-purple-400 hover:underline">More</a>
+              {/* <a href="#" className="text-sm text-purple-400 hover:underline">More</a> */}
             </div>
             {completedAnime.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {completedAnime.slice(0, 8).map((anime) => (
-                  <a
-                    href={`/anime/${anime.animeId}`}
+                  <Link
+                    to={`/anime/${anime.animeId}`}
                     key={anime.animeId}
-                    className="rounded-lg overflow-hidden shadow-lg hover:shadow-purple-400/50 transition group"
-                  >
+                    className="rounded-lg overflow-hidden shadow-lg hover:shadow-purple-400/50 transition group">
                     <div className="relative">
-                      <img 
-                        src={anime.poster} 
-                        alt={anime.title} 
+                      <img
+                        src={anime.poster}
+                        alt={anime.title}
                         className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                       />
@@ -338,11 +372,17 @@ export default function HomePage() {
                       )}
                     </div>
                     <div className="p-3 bg-gray-800">
-                      <h3 className="text-sm font-semibold line-clamp-2 mb-1">{anime.title}</h3>
-                      <p className="text-xs text-gray-400">{anime.episodes} Episodes</p>
-                      <p className="text-xs text-gray-500">{anime.lastReleaseDate || "-"}</p>
+                      <h3 className="text-sm font-semibold line-clamp-2 mb-1">
+                        {anime.title}
+                      </h3>
+                      <p className="text-xs text-gray-400">
+                        {anime.episodes} Episodes
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {anime.lastReleaseDate || '-'}
+                      </p>
                     </div>
-                  </a>
+                  </Link>
                 ))}
               </div>
             ) : (
@@ -359,28 +399,36 @@ export default function HomePage() {
           <h3 className="text-xl font-semibold mb-4">Featured Completed</h3>
           {completedAnime.length > 0 ? (
             completedAnime.slice(0, 6).map((anime) => (
-              <div key={anime.animeId} className="flex bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
-                <a 
-                  href={`/anime/${anime.animeId}`} 
-                  className="flex-shrink-0"
-                >
-                  <img 
-                    src={anime.poster} 
-                    alt={anime.title} 
+              <div
+                key={anime.animeId}
+                className="flex bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
+                <Link
+                  to={`/anime/${anime.animeId}`}
+                  key={anime.animeId}
+                  className="flex-shrink-0">
+                  <img
+                    src={anime.poster}
+                    alt={anime.title}
                     className="w-24 h-32 object-cover"
                     loading="lazy"
                   />
-                </a>
+                </Link>
                 <div className="p-3 flex flex-col justify-between flex-1">
-                  <a 
-                    href={`/anime/${anime.animeId}`} 
-                    className="hover:underline"
-                  >
-                    <h4 className="text-sm font-semibold line-clamp-2 cursor-pointer">{anime.title}</h4>
+                  <a
+                    href={`/anime/${anime.animeId}`}
+                    key={anime.animeId}
+                    className="hover:underline">
+                    <h4 className="text-sm font-semibold line-clamp-2 cursor-pointer">
+                      {anime.title}
+                    </h4>
                   </a>
                   <div className="mt-2">
-                    <p className="text-xs text-gray-400">Episodes: {anime.episodes || "-"}</p>
-                    <p className="text-xs text-gray-400">Completed: {anime.lastReleaseDate || "-"}</p>
+                    <p className="text-xs text-gray-400">
+                      Episodes: {anime.episodes || '-'}
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      Completed: {anime.lastReleaseDate || '-'}
+                    </p>
                     {anime.score && (
                       <div className="mt-1 inline-block bg-yellow-600 text-xs px-2 py-0.5 rounded-full">
                         ⭐ {anime.score}

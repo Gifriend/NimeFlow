@@ -13,10 +13,8 @@ export default function EpisodeStreamingPage() {
   useEffect(() => {
     const fetchEpisode = async () => {
       try {
-        const token = document.cookie
-          .split('; ')
-          .find((row) => row.startsWith('token='))
-          ?.split('=')[1];
+        const token = localStorage.getItem('token');
+        console.log(token)
 
         const response = await axios.get(
           `${import.meta.env.VITE_API_BASE_URL}/otakudesu/episode/${episodeId}`,

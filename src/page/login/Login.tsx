@@ -31,10 +31,11 @@ export default function Login() {
       });
 
       if (response.status === 200 || response.status === 201) {
-        document.cookie = `token=${response.data.token}; path=/; max-age=86400`; 
+        localStorage.setItem('token', response.data.token);
+        console.log(localStorage.getItem('token'));
         navigate('/home',{ replace: true });
       } else {
-        alert(
+        setError(
           response.data.message ||
             'Login gagal. Periksa kembali email dan password Anda.'
         );
@@ -44,7 +45,7 @@ export default function Login() {
         !err.response ||
         err.code === 'ECONNABORTED' ||
         err.message === 'Network Error';
-      alert(
+      setError(
         isNetworkError
           ? 'Gagal terhubung ke server.'
           : 'Email atau password salah'
@@ -70,8 +71,7 @@ export default function Login() {
         <div className="bg-white py-8 px-4 shadow-xl rounded-lg sm:px-10">
           {error && (
             <div
-              className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-              role="alert">
+              className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
               <span className="block sm:inline">{error}</span>
             </div>
           )}
@@ -88,7 +88,6 @@ export default function Login() {
                   id="email"
                   name="email"
                   type="email"
-                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 text-black focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
@@ -108,7 +107,6 @@ export default function Login() {
                   id="password"
                   name="password"
                   type={showPassword ? 'text' : 'password'}
-                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 text-black focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"

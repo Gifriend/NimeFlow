@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Cookies from 'js-cookie';
 import { format } from 'date-fns'; // Tambahkan date-fns untuk formatting tanggal
 
 const HistoryScreen: React.FC = () => {
   const [history, setHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const getToken = () => Cookies.get('token');
+  const getToken = () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error("No token found");
+  }
+  return token;
+};
 
   // Format tanggal tontonan
   const formatWatchedDate = (dateString: string) => {

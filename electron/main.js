@@ -9,6 +9,9 @@ const __dirname = path.dirname(__filename);
 
 // Cek sederhana untuk environment development
 // NOTE: Anda mungkin perlu cara yang lebih kuat untuk mendeteksi mode dev
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'production';
+}
 const isDev = process.env.NODE_ENV !== 'production';
 
 function createWindow() {
@@ -18,7 +21,10 @@ function createWindow() {
     webPreferences: {
       // preload: path.join(__dirname, 'preload.js'), // Opsional jika perlu preload script
       nodeIntegration: false, // Praktik terbaik: biarkan false
-      contextIsolation: true,  // Praktik terbaik: biarkan true
+      contextIsolation: true, // Praktik terbaik: biarkan true
+      webSecurity: false ,
+      enableRemoteModule: true,
+      partition: 'persist:animeflow' 
     },
   });
 

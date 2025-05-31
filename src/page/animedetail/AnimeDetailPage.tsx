@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ArrowLeft, Calendar, Clock, Star, Users, Play } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 interface Score {
   value: string;
@@ -92,21 +92,12 @@ export default function AnimeDetail() {
 
   useEffect(() => {
     const fetchAnime = async () => {
-      const token = document.cookie
-          .split('; ')
-          .find((row) => row.startsWith('token='))
-          ?.split('=')[1];
       try {
         setLoading(true);
         setError('');
         
         const response = await fetch(
           `${import.meta.env.VITE_API_BASE_URL}/otakudesu/anime/${animeId}`,
-          {
-            headers:{
-              Authorization: `Bearer ${token}`,
-            },
-          },
         );
         
         if (!response.ok) {
@@ -299,15 +290,15 @@ export default function AnimeDetail() {
               <h2 className="text-2xl font-bold mb-4">Related Anime</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {anime.synopsis.connections.map((connection) => (
-                  <a
+                  <Link
                     key={connection.animeId}
-                    href={`/anime/${connection.animeId}`}
+                    to={`/anime/${connection.animeId}`}
                     className="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 transition"
                   >
                     <h3 className="font-semibold text-blue-400 hover:underline">
                       {connection.title}
                     </h3>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -322,15 +313,15 @@ export default function AnimeDetail() {
                   {anime.episodeList
                     .sort((a, b) => a.title - b.title)
                     .map((episode) => (
-                      <a
+                      <Link
                         key={episode.episodeId}
-                        href={`/episode/${episode.episodeId}`}
+                        to={`/episode/${episode.episodeId}`}
                         className="bg-gray-700 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 rounded-lg p-3 text-center transition group"
                       >
                         <div className="text-sm font-medium group-hover:text-white">
                           Episode {episode.title}
                         </div>
-                      </a>
+                      </Link>
                     ))}
                 </div>
               </div>

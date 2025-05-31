@@ -1,8 +1,8 @@
 import {
-  BrowserRouter as Router,
-  Routes,
+  HashRouter,
   Route,
   useLocation,
+  Routes,
 } from 'react-router-dom';
 import Login from './page/login/Login';
 import RegisterForm from './page/register/Register';
@@ -27,6 +27,7 @@ import ScrollToTop from './components/scrolltop';
 
 function AppWrapper() {
   const location = useLocation();
+  console.log('Current route:', location.pathname);
 
   const hideLayout =
     location.pathname === '/' || location.pathname === '/register';
@@ -62,10 +63,10 @@ function AppWrapper() {
 
 function App() {
   return (
-    <Router>
-      <AppWrapper />
+    <HashRouter>
       <ScrollToTop />
-    </Router>
+      <AppWrapper />
+    </HashRouter>
   );
 }
 

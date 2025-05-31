@@ -71,8 +71,7 @@ export default function RegisterForm() {
         <div className="bg-white py-8 px-4 shadow-xl rounded-lg sm:px-10">
           {error && (
             <div
-              className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-              role="alert">
+              className="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
               <span className="block sm:inline">{error}</span>
             </div>
           )}
@@ -89,7 +88,6 @@ export default function RegisterForm() {
                   id="email"
                   name="email"
                   type="email"
-                  autoComplete="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -110,7 +108,6 @@ export default function RegisterForm() {
                   id="password"
                   name="password"
                   type={showPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -163,7 +160,6 @@ export default function RegisterForm() {
                   id="confirmPassword"
                   name="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}

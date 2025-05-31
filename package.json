@@ -10,8 +10,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "dev": "concurrently \"npm run dev:react\" \"wait-on http://localhost:4321 && electron .\"",
-    "build": "npm run build:react && electron-builder",
-    "postinstall": "electron-builder install-app-deps"
+    "build": "cross-env VITE_API_BASE_URL=https://bvfgbtpd-3001.asse.devtunnels.ms npm run build:react && electron-builder",
+    "postinstall": "electron-builder install-app-deps",
+     "electron:debug": "electron --trace-warnings electron/main.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.4",
@@ -35,6 +36,7 @@
     "@vitejs/plugin-react-swc": "^3.8.0",
     "autoprefixer": "^10.4.21",
     "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
     "electron": "^31.1.0",
     "electron-builder": "^24.13.3",
     "eslint": "^9.22.0",
@@ -53,7 +55,7 @@
     "productName": "NimeFlow",
     "files": [
       "dist/**/*",
-      "electron/**/*"
+      "electron/main.js"
     ],
     "directories": {
       "buildResources": "assets",
