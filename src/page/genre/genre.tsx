@@ -1,14 +1,6 @@
-// pages/genre/genre.tsx
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-type Genre = {
-  title: string;
-  genreId: string;
-  href: string;
-  otakudesuUrl: string;
-};
+import { Genre, GenreService } from "../../services/genreServices";
 
 export default function GenrePage() {
   const [genres, setGenres] = useState<Genre[]>([]);
@@ -16,71 +8,40 @@ export default function GenrePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchGenres = async () => {
-      const token = document.cookie
-          .split('; ')
-          .find((row) => row.startsWith('token='))
-          ?.split('=')[1];
-      try {
-        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/otakudesu/genres`,
-          {
-            headers:{
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
+    const genreService = new GenreService();
 
-        if (Array.isArray(res.data.data.genreList)) {
-          setGenres(res.data.data.genreList);
-        } else {
-          console.warn("Genres is NOT an array!", typeof res.data.data);
-        }
-      } catch (err) {
-        console.error("Error fetching genres:", err);
-      } finally {
-        setLoading(false);
-      }
+    const loadGenres = async () => {
+      const data = await genreService.fetchGenres();
+      setGenres(data);
+      setLoading(false);
     };
 
-    fetchGenres();
+    loadGenres();
   }, []);
 
   return (
-   <div className="bg-gray-900 text-white min-h-screen">
-  {/* <Sidebar /> */}
-  <main className="mr-80 mt-16 p-6">
-    <h2 className="text-2xl font-bold mb-4 border-b border-gray-700 pb-2">Daftar Genre</h2>
+    <div className="bg-gray-900 text-white min-h-screen">
+      <main className="mr-80 mt-16 p-6">
+        <h2 className="text-2xl font-bold mb-4 border-b border-gray-700 pb-2">
+          Daftar Genre
+        </h2>
 
-    {loading ? (
-      <p>Loading...</p>
-    ) : (
-      <div className="grid grid-cols-5 gap-4">
-        {genres.map((genre) => (
-          <button
-            key={genre.genreId}
-            onClick={() => navigate(`/genre/${genre.genreId}`)}
-            className="
-              text-blue-400
-              border
-              border-blue-500
-              rounded-md
-              py-2
-              transition-all
-              duration-300
-              hover:text-white
-              hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-500
-              focus:outline-none
-              focus:ring-2
-              focus:ring-blue-500
-            "
-          >
-            {genre.title}
-          </button>
-        ))}
-      </div>
-    )}
-  </main>
-</div>
-
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <div className="grid grid-cols-5 gap-4">
+            {genres.map((genre) => (
+              <button
+                key={genre.genreId}
+                onClick={() => navigate(`/genre/${genre.genreId}`)}
+                className="text-blue-400 border border-blue-500 rounded-md py-2 transition-all duration-300 hover:text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {genre.title}
+              </button>
+            ))}
+          </div>
+        )}
+      </main>
+    </div>
   );
 }
