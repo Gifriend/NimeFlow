@@ -162,7 +162,7 @@ export default function HomePage() {
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % ongoingAnime.length);
-    }, 5000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [ongoingAnime]);
@@ -212,77 +212,152 @@ export default function HomePage() {
     <div className="bg-gray-900 text-white min-h-screen px-6 pt-20 pb-10">
       {/* Slider - Using ongoing anime */}
       {ongoingAnime.length > 0 && (
-        <div className="relative max-w-7xl mx-auto w-full overflow-hidden mb-10">
+        <div className="relative w-full max-w-7xl mx-auto mb-10 overflow-hidden">
           <div
             className="flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
-            {ongoingAnime.slice(0, 8).map((anime) => (
+            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          >
+            {ongoingAnime.map((anime) => (
               <div
                 key={anime.animeId}
-                className="w-full flex-shrink-0 flex"
-                style={{ minWidth: '100%' }}>
-                <div className="flex-1 p-6 flex flex-col justify-center">
-                  <h2 className="text-3xl font-bold mb-4">{anime.title}</h2>
-                  <p className="text-lg mb-2">
-                    Episode: {anime.episodes || '-'}
-                  </p>
-                  <p className="text-sm text-gray-400 mb-2">
-                    Release Day: {anime.releaseDay || '-'}
-                  </p>
-                  <p className="text-sm text-gray-400 mb-6">
-                    Latest: {anime.latestReleaseDate || '-'}
-                  </p>
-                  <Link
-                    to={`/anime/${encodeURIComponent(anime.animeId)}`}
-                    key={anime.animeId}
-                    className="inline-flex items-center gap-2 w-30 bg-gradient-to-r from-blue-600 to-purple-500 hover:bg-purple-700 transition px-5 py-2 rounded-full text-white font-semibold">
-                    <Play size={14} />
-                    Tonton
-                  </Link>
-                </div>
-                <div className="flex-1">
-                  <img
-                    src={anime.poster}
-                    alt={anime.title}
-                    className="w-full h-full rounded-2xl object-cover"
-                    loading="lazy"
-                  />
+                className="w-full flex-shrink-0"
+                style={{ minWidth: '100%' }}
+              >
+                <div className="flex flex-col md:flex-row items-center justify-center p-4 md:p-8 gap-6">
+                  <div className="flex-1 order-2 md:order-1 text-center md:text-left">
+                    <h2 className="text-2xl lg:text-3xl font-bold mb-3">{anime.title}</h2>
+                    <p className="text-base lg:text-lg mb-2">
+                      Episode: {anime.episodes || '-'}
+                    </p>
+                    <p className="text-sm text-gray-400 mb-2">
+                      Hari Rilis: {anime.releaseDay || '-'}
+                    </p>
+                    <p className="text-sm text-gray-400 mb-5">
+                      Terbaru: {anime.latestReleaseDate || '-'}
+                    </p>
+                    <Link
+                      to={`/anime/${encodeURIComponent(anime.animeId)}`}
+                      key={anime.animeId}
+                      className="inline-flex items-center gap-2 w-auto bg-gradient-to-r from-blue-600 to-purple-500 hover:bg-purple-700 transition px-5 py-2 rounded-full text-white font-semibold"
+                    >
+                      <Play size={14} />
+                      Tonton
+                    </Link>
+                  </div>
+                  <div className="flex-shrink-0 order-1 md:order-2">
+                    <img
+                      src={anime.poster}
+                      alt={anime.title}
+                      className="w-48 sm:w-64 lg:w-80 h-auto rounded-2xl object-cover shadow-lg"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
               </div>
             ))}
           </div>
+
+          {/* Tombol Navigasi Slider */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-4 z-10">
             <button
               onClick={handlePrev}
-              className="bg-black/40 p-2 rounded-full hover:bg-opacity-75 transition">
+              className="bg-black/40 p-2 rounded-full hover:bg-opacity-75 transition"
+            >
               <ChevronLeft size={28} />
             </button>
             <button
               onClick={handleNext}
-              className="bg-black/40 p-2 rounded-full hover:bg-opacity-75 transition">
+              className="bg-black/40 p-2 rounded-full hover:bg-opacity-75 transition"
+            >
               <ChevronRight size={28} />
             </button>
           </div>
         </div>
       )}
-
       <div className="max-w-7xl mx-auto border-b border-gray-700 mb-10" />
-
       {/* Main Content */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Left section */}
         <div className="lg:col-span-3 space-y-12">
-          {/* Ongoing Anime */}
+        {/* Ongoing Anime */}
+        <section>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-2xl font-semibold">Anime Ongoing</h3>
+          </div>
+          {ongoingAnime.length > 0 ? (
+            <div className="relative">
+              <button
+                onClick={() =>
+                  scrollRef.current?.scrollBy({
+                    left: -450,
+                    behavior: 'smooth',
+                  })
+                }
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition">
+                <ChevronLeft size={24} />
+              </button>
+              <div
+                ref={scrollRef}
+                className="flex overflow-x-auto gap-5 scrollbar-hide scroll-smooth px-8">
+                {ongoingAnime.map((anime) => (
+                  <Link
+                    to={`/anime/${encodeURIComponent(anime.animeId)}`}
+                    key={anime.animeId}
+                    className="flex-shrink-0 w-44 md:w-52 rounded-lg overflow-hidden shadow-lg hover:shadow-purple-400/50 transition-all group">
+                    <div className="relative">
+                      <img
+                        src={anime.poster}
+                        alt={anime.title}
+                        className="w-full aspect-[2/3] object-cover"
+                        loading="lazy"
+                      />
+                      <div className="absolute top-2 left-2 bg-gradient-to-r from-blue-600 to-purple-500 text-xs text-white px-2 py-0.5 rounded">
+                        Ep {anime.episodes || '?'}
+                      </div>
+                    </div>
+                    <div className="p-3">
+                      <h3 className="text-sm md:text-base font-semibold truncate group-hover:text-purple-400 transition">
+                        {anime.title}
+                      </h3>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {anime.releaseDay || '-'}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        {anime.latestReleaseDate || '-'}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+              <button
+                onClick={() =>
+                  scrollRef.current?.scrollBy({
+                    left: 450,
+                    behavior: 'smooth',
+                  })
+                }
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition">
+                <ChevronRight size={24} />
+              </button>
+            </div>
+          ) : (
+            <div className="text-center py-8 text-gray-400">
+              <LoadingSpinner />
+              <p className="mt-2">Loading ongoing anime...</p>
+            </div>
+          )}
+        </section>
+
+         {/* Completed Anime Section */}
           <section>
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-2xl font-semibold">Anime Ongoing</h3>
-              {/* <a href="#" className="text-sm text-purple-400 hover:underline">More</a> */}
+              <h3 className="text-2xl font-semibold">Anime Completed</h3>
             </div>
-            {ongoingAnime.length > 0 ? (
+            {completedAnime.length > 0 ? (
               <div className="relative">
                 <button
                   onClick={() =>
-                    scrollRef.current?.scrollBy({
+                    scrollRef.current?.scrollBy({ 
                       left: -450,
                       behavior: 'smooth',
                     })
@@ -292,32 +367,32 @@ export default function HomePage() {
                 </button>
                 <div
                   ref={scrollRef}
-                  className="flex overflow-x-auto gap-4 scrollbar-hide scroll-smooth px-8">
-                  {ongoingAnime.map((anime) => (
+                  className="flex overflow-x-auto gap-5 scrollbar-hide scroll-smooth px-8">
+                  {completedAnime.map((anime) => (
                     <Link
                       to={`/anime/${encodeURIComponent(anime.animeId)}`}
                       key={anime.animeId}
-                      className="flex-shrink-0 w-40 rounded-lg overflow-hidden shadow-lg hover:shadow-purple-400/50 transition">
+                      className="flex-shrink-0 w-44 md:w-52 rounded-lg overflow-hidden shadow-lg hover:shadow-purple-400/50 transition-all group">
                       <div className="relative">
                         <img
                           src={anime.poster}
                           alt={anime.title}
-                          className="w-full h-56 object-cover"
+                          className="w-full aspect-[2/3] object-cover"
                           loading="lazy"
                         />
                         <div className="absolute top-2 left-2 bg-gradient-to-r from-blue-600 to-purple-500 text-xs text-white px-2 py-0.5 rounded">
                           Ep {anime.episodes || '?'}
                         </div>
+                        <div className="absolute top-2 right-2 bg-yellow-600 text-white text-xs px-1.5 py-0.5 rounded flex items-center">
+                          ⭐ {anime.score || '?'}
+                        </div>
                       </div>
-                      <div className="p-2">
-                        <h3 className="text-sm font-semibold truncate">
+                      <div className="p-3">
+                        <h3 className="text-sm md:text-base font-semibold truncate group-hover:text-purple-400 transition">
                           {anime.title}
                         </h3>
-                        <p className="text-xs text-gray-500">
-                          {anime.releaseDay || '-'}
-                        </p>
-                        <p className="text-xs text-gray-400">
-                          {anime.latestReleaseDate || '-'}
+                        <p className="text-xs text-gray-400 mt-1">
+                          {anime.lastReleaseDate || '-'}
                         </p>
                       </div>
                     </Link>
@@ -333,57 +408,6 @@ export default function HomePage() {
                   className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition">
                   <ChevronRight size={24} />
                 </button>
-              </div>
-            ) : (
-              <div className="text-center py-8 text-gray-400">
-                <LoadingSpinner />
-                <p className="mt-2">Loading ongoing anime...</p>
-              </div>
-            )}
-          </section>
-
-          {/* Completed Anime Section */}
-          <section>
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-2xl font-semibold">Anime Completed</h3>
-              {/* <a href="#" className="text-sm text-purple-400 hover:underline">More</a> */}
-            </div>
-            {completedAnime.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {completedAnime.slice(0, 8).map((anime) => (
-                  <Link
-                    to={`/anime/${anime.animeId}`}
-                    key={anime.animeId}
-                    className="rounded-lg overflow-hidden shadow-lg hover:shadow-purple-400/50 transition group">
-                    <div className="relative">
-                      <img
-                        src={anime.poster}
-                        alt={anime.title}
-                        className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-                        loading="lazy"
-                      />
-                      <div className="absolute top-2 left-2 bg-green-600 text-xs text-white px-2 py-0.5 rounded">
-                        Completed
-                      </div>
-                      {anime.score && (
-                        <div className="absolute top-2 right-2 bg-yellow-600 text-xs text-white px-2 py-0.5 rounded">
-                          ⭐ {anime.score}
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-3 bg-gray-800">
-                      <h3 className="text-sm font-semibold line-clamp-2 mb-1">
-                        {anime.title}
-                      </h3>
-                      <p className="text-xs text-gray-400">
-                        {anime.episodes} Episodes
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {anime.lastReleaseDate || '-'}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
               </div>
             ) : (
               <div className="text-center py-8 text-gray-400">

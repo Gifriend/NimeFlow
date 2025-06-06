@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Genre, GenreService } from "../../services/genreServices";
+import Sidebar from "../../components/Sidebar";
 
 export default function GenrePage() {
   const [genres, setGenres] = useState<Genre[]>([]);
@@ -21,6 +22,7 @@ export default function GenrePage() {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
+      <Sidebar />
       <main className="mr-80 mt-16 p-6">
         <h2 className="text-2xl font-bold mb-4 border-b border-gray-700 pb-2">
           Daftar Genre

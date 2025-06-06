@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Sidebar from "../../components/Sidebar";
 
 export default function Completed() {
   const [completedAnimeData, setCompletedAnimeData] = useState<any[]>([]);
@@ -56,7 +57,7 @@ export default function Completed() {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      {/* <Sidebar /> */}
+       <Sidebar /> *
 
       <main className="mr-80 mt-16 p-6">
         <div className="mb-8">
@@ -68,41 +69,39 @@ export default function Completed() {
           <p>Loading...</p>
         ) : (
           <div>
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {completedAnimeData.map((anime, index) => (
-                 <Link to={`/anime/${anime.animeId}`} key={index} className="block" >
-                <div
-                  className="bg-gray-800 w-54 h-full rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all"
-                >
-                  <div className="relative">
-                    <img
-                      src={anime.poster}
-                      alt={anime.title}
-                      className="w-full h-74 object-cover"
-                      onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                        const target = e.target as HTMLImageElement;
-                        target.onerror = null;
-                        target.src = '/path/to/fallback-image.jpg';
-                      }}
-                    />
-                    <div className="absolute top-2 left-2 bg-gradient-to-r from-blue-600 to-purple-500 text-xs px-2 py-0.5 rounded">
-                      {anime.type}
+                <Link to={`/anime/${anime.animeId}`} key={index} className="block">
+                  <div className="bg-gray-800 h-full flex flex-col rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:border-purple-500/50 hover:shadow-purple-500/10 transition-all">
+                    <div className="relative">
+                      <img
+                        src={anime.poster}
+                        alt={anime.title}
+                        className="w-full aspect-[2/3] object-cover"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = '/path/to/fallback-image.jpg';
+                        }}
+                      />
+                      <div className="absolute top-2 left-2 bg-gradient-to-r from-blue-600 to-purple-500 text-xs px-2 py-0.5 rounded">
+                        {anime.type}
+                      </div>
+                      <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold px-2 py-0.5 rounded flex items-center">
+                        <FaStar className="text-black mr-1" /> {anime.score || "N/A"}
+                      </div>
+                      <div className="absolute bottom-2 left-2 bg-gray-800/80 text-white text-[10px] px-2 py-0.5 rounded">
+                        {anime.status}
+                      </div>
                     </div>
-                    <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs font-bold px-2 py-0.5 rounded flex items-center">
-                      <FaStar className="text-black mr-1" /> {anime.score || "N/A"}
+                    <div className="p-3 flex-1 flex flex-col">
+                      <h3 className="font-medium text-sm leading-tight text-white truncate">
+                        {anime.title}
+                      </h3>
                     </div>
-                    <div className="absolute bottom-2 left-2 bg-gray-800/80 text-white text-[10px] px-2 py-0.5 rounded">
-                    {anime.status}
                   </div>
-                  </div>
-                  <div className="p-3">
-                    <h3 className="font-medium text-sm leading-tight">{anime.title}</h3>
-                  </div>
-                </div>
                 </Link>
               ))}
             </div>
-
             {/* Pagination Controls */}
             <div className="flex justify-center mt-6">
               <button

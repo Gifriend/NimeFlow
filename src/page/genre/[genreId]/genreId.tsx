@@ -4,6 +4,7 @@ import { useParams, Link } from "react-router-dom"; // Tambahkan Link
 import axios from "axios";
 import { FaStar } from "react-icons/fa";
 import BackButton from "../../../components/backbutton";
+import Sidebar from "../../../components/Sidebar";
 
 export default function GenreDetailPage() {
   const { genreId } = useParams();
@@ -27,6 +28,7 @@ export default function GenreDetailPage() {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
+      <Sidebar />
       <main className="mr-80 mt-15 p-6">
         <BackButton to="/genre" />
         <div className="mb-8">
