@@ -16,9 +16,18 @@ interface AnimeItem {
   status?: string;
 }
 
+const SkeletonCard = () => (
+  <div className="bg-gray-800 p-4 rounded-lg shadow-lg animate-pulse">
+    <div className="w-full h-48 bg-gray-700 rounded mb-4"></div>
+    <div className="h-4 bg-gray-700 rounded w-3/4 mb-2"></div>
+    <div className="h-3 bg-gray-700 rounded w-1/2 mb-1"></div>
+    <div className="h-3 bg-gray-700 rounded w-1/3"></div>
+  </div>
+);
+
 const SearchResult: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<AnimeItem[]>([]);
   const [loading, setLoading] = useState(false);
   const q = searchParams.get('q') ?? '';
 
@@ -55,17 +64,23 @@ const SearchResult: React.FC = () => {
   return (
     <div className="p-4 mt-20 text-white">
       <h2 className="text-2xl mb-4">Search Results for "{q}"</h2>
+
       {loading ? (
-        <p>Loading...</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {Array.from({ length: 10 }).map((_, index) => (
+            <SkeletonCard key={index} />
+          ))}
+        </div>
       ) : results.length === 0 ? (
         <p>No results found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {results.map((item: AnimeItem,) => (
+          {results.map((item: AnimeItem) => (
             <Link
               to={`/anime/${item.animeId}`}
               key={item.animeId}
-              className="bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-purple-400/50 transition block">
+              className="bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-purple-400/50 transition block"
+            >
               <img
                 src={item.poster}
                 alt={item.title}
