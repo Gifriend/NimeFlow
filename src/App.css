@@ -22,15 +22,21 @@ body {
   scrollbar-width: none;
 }
 
-
-.skeleton {
-  background: linear-gradient(90deg, #2d2d2d 25%, #3c3c3c 50%, #2d2d2d 75%);
-  border-radius: 0.5rem;
-  background-size: 400% 100%;
-  animation: pulse 1.5s infinite ease-in-out;
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
 }
-
-@keyframes pulse {
-  0% { background-position: 0% 0%; }
-  100% { background-position: -200% 0%; }
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(
+    to right,
+    #2d3748 0%,
+    #4a5568 50%,
+    #2d3748 100%
+  );
+  background-size: 200% 100%;
 }

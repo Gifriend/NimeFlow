@@ -3,7 +3,7 @@ import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Cookies from 'js-cookie';
-import Sidebar from "../../components/Sidebar";
+// import Sidebar from "../../components/Sidebar";
 
 export default function Ongoing() {
   const [ongoingAnimeData, setOngoingAnimeData] = useState<any[]>([]);
