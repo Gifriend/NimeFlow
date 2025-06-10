@@ -21,3 +21,16 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+
+.skeleton {
+  background: linear-gradient(90deg, #2d2d2d 25%, #3c3c3c 50%, #2d2d2d 75%);
+  border-radius: 0.5rem;
+  background-size: 400% 100%;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { background-position: 0% 0%; }
+  100% { background-position: -200% 0%; }
+}
